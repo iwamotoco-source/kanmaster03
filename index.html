@@ -1,0 +1,2265 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>KAN MASTER v12｜1級管工事施工管理技士 1次試験</title>
+<!-- KAN MASTER v12 | built: 2026-07-09 | complete-rewrite -->
+<style>
+:root{
+  --bg:#0a0e27;--bg-2:#111634;--card:#161c3e;--card-2:#1d2455;
+  --border:rgba(0,245,255,.15);--border-2:rgba(255,255,255,.08);
+  --text:#e4e9ff;--text-sub:#8b95c9;--text-dim:#5a6498;
+  --neon-cyan:#00f5ff;--neon-green:#39ff88;--neon-red:#ff4d6d;
+  --neon-yellow:#fff04a;--neon-magenta:#ff6ec7;--neon-orange:#ffa940;
+  --radius:10px;--font-mono:'SF Mono','Fira Code','Cascadia Code',monospace;
+  --font-sans:-apple-system,'Segoe UI','Hiragino Sans','Noto Sans JP',sans-serif;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+}
+[data-theme="light"]{
+  --bg:#f0f4ff;--bg-2:#e0e8f5;--card:#ffffff;--card-2:#f5f8ff;
+  --border:rgba(0,100,200,.12);--border-2:rgba(0,0,0,.08);
+  --text:#1a2244;--text-sub:#4a5488;--text-dim:#8a92b0;
+  --neon-cyan:#0099cc;--neon-green:#00aa44;--neon-red:#e03050;
+  --neon-yellow:#cc9900;--neon-magenta:#cc3388;--neon-orange:#cc7720;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:14px;line-height:1.5}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at top,rgba(0,245,255,.03),transparent 60%);pointer-events:none;z-index:0}
+/* Header */
+.app-header{position:fixed;top:0;left:0;right:0;height:52px;display:flex;align-items:center;gap:6px;padding:0 12px;padding-top:var(--safe-top);background:rgba(10,14,39,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);z-index:100;flex-shrink:0}
+.app-header .logo{font-family:var(--font-mono);font-weight:700;font-size:15px;color:var(--neon-cyan);text-shadow:0 0 8px rgba(0,245,255,.3);white-space:nowrap}
+.app-header .spacer{flex:1}
+.icon-btn{background:none;border:1px solid var(--border-2);border-radius:8px;padding:6px 10px;font-size:16px;cursor:pointer;color:var(--text-sub);transition:.2s;position:relative;min-width:36px;min-height:36px;display:flex;align-items:center;justify-content:center}
+.icon-btn:hover{color:var(--neon-cyan);border-color:var(--neon-cyan)}
+.icon-btn:active{transform:scale(.92)}
+.sync-dot{position:absolute;top:2px;right:2px;width:6px;height:6px;border-radius:50%;background:var(--text-dim)}
+.sync-dot.spin{background:var(--neon-yellow);animation:pulse 1s infinite}
+.sync-dot.ok{background:var(--neon-green);box-shadow:0 0 4px var(--neon-green)}
+.sync-dot.err{background:var(--neon-red)}
+@keyframes pulse{50%{opacity:.3}}
+/* Main area */
+#mainArea{position:fixed;top:52px;left:0;right:0;bottom:56px;overflow-y:auto;-webkit-overflow-scrolling:touch;z-index:1}
+/* Screens */
+.screen{display:none;padding:16px;max-width:1200px;margin:0 auto;animation:fadeIn .25s ease}
+.screen.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+/* Bottom nav */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:56px;padding-bottom:var(--safe-bottom);display:flex;background:rgba(10,14,39,.95);backdrop-filter:blur(12px);border-top:1px solid var(--border);z-index:100}
+.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:10px;font-family:var(--font-mono);transition:.2s;min-height:48px}
+.bnav-btn.active{color:var(--neon-cyan)}
+.bnav-btn:active{transform:scale(.92)}
+.bnav-icon{font-size:18px}
+/* Section headers */
+.sec-head{margin-bottom:16px}
+.sec-title{font-family:var(--font-mono);font-size:18px;font-weight:700;color:var(--neon-cyan);letter-spacing:.05em}
+.sec-sub{font-size:12px;color:var(--text-sub);margin-top:4px}
+/* Dashboard stats */
+.dash-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.dash-stat{background:var(--card);border:1px solid var(--border-2);border-radius:var(--radius);padding:12px 10px;text-align:center}
+.dash-stat-val{font-family:var(--font-mono);font-size:22px;font-weight:700;color:var(--neon-cyan)}
+.dash-stat.green .dash-stat-val{color:var(--neon-green)}
+.dash-stat.magenta .dash-stat-val{color:var(--neon-magenta)}
+.dash-stat.yellow .dash-stat-val{color:var(--neon-yellow)}
+.dash-stat-lbl{font-size:10px;color:var(--text-sub);margin-top:2px;font-family:var(--font-mono)}
+/* Year grid */
+.year-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.year-card{background:var(--card);border:1px solid var(--border-2);border-radius:var(--radius);padding:16px;cursor:pointer;transition:.2s;position:relative;overflow:hidden}
+.year-card:hover{border-color:var(--neon-cyan);box-shadow:0 0 16px rgba(0,245,255,.1)}
+.year-card:active{transform:scale(.97)}
+.year-card.has-data::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--neon-cyan),var(--neon-green))}
+.year-card-year{font-family:var(--font-mono);font-size:18px;font-weight:700;color:var(--text)}
+.year-card-sub{font-size:11px;color:var(--text-sub);font-family:var(--font-mono)}
+.year-card-badges{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.badge{font-size:10px;padding:2px 6px;border-radius:4px;font-family:var(--font-mono)}
+.badge-ok{background:rgba(57,255,136,.12);color:var(--neon-green)}
+.badge-miss{background:rgba(255,77,109,.12);color:var(--neon-red)}
+.badge-ready{position:absolute;top:8px;right:8px;font-size:9px;font-family:var(--font-mono);color:var(--neon-green);background:rgba(57,255,136,.1);padding:2px 6px;border-radius:4px}
+.year-card-score{margin-top:10px;display:flex;align-items:baseline;gap:6px}
+.year-card-score .lbl{font-size:10px;color:var(--text-dim);font-family:var(--font-mono)}
+.year-card-score .val{font-family:var(--font-mono);font-size:20px;font-weight:700;color:var(--neon-cyan)}
+.year-card-score .val.fail{color:var(--neon-red)}
+/* Weak list (home) */
+.home-weak{background:var(--card);border:1px solid var(--border-2);border-radius:var(--radius);padding:14px;margin-top:16px}
+.home-weak h3{font-size:13px;font-family:var(--font-mono);color:var(--neon-orange);margin-bottom:10px}
+.weak-row{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--border-2)}
+.weak-row:last-child{border:none}
+.weak-no{font-family:var(--font-mono);font-size:12px;color:var(--text-dim);width:20px}
+.weak-label{flex:1;font-size:12px}
+.weak-rate-bar{width:60px;height:6px;background:var(--bg-2);border-radius:3px;overflow:hidden}
+.weak-rate-fill{height:100%;background:linear-gradient(90deg,var(--neon-red),var(--neon-orange),var(--neon-green))}
+.weak-pct{font-family:var(--font-mono);font-size:11px;color:var(--text-sub);width:32px;text-align:right}
+/* Exam screen */
+.exam-outer{display:flex;flex-direction:column;height:calc(100vh - 52px - 56px - 32px);max-width:1400px;margin:0 auto}
+.exam-topbar{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.exam-year-label{font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--text);white-space:nowrap}
+.mode-tabs{display:flex;gap:2px;background:var(--card);padding:3px;border-radius:8px;border:1px solid var(--border-2)}
+.mode-tab{padding:6px 14px;border:none;background:none;color:var(--text-sub);font-size:12px;font-weight:600;border-radius:6px;cursor:pointer;transition:.2s;min-height:32px}
+.mode-tab.active{color:var(--bg);background:var(--neon-cyan)}
+.mode-tab:active{transform:scale(.95)}
+.prog-label{font-family:var(--font-mono);font-size:11px;color:var(--text-sub)}
+.prog-label .num{color:var(--neon-cyan);font-weight:700}
+.timer{font-family:var(--font-mono);font-size:14px;font-weight:700;padding:4px 10px;border-radius:6px;background:var(--card);border:1px solid var(--border-2)}
+.timer.run{color:var(--neon-green)}
+.timer.warn{color:var(--neon-yellow)}
+.timer.danger{color:var(--neon-red);animation:pulse 1s infinite}
+/* Exam container: PDF + Answer */
+.exam-container{display:flex;gap:8px;flex:1;min-height:0;overflow:hidden}
+.pdf-pane{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--card);border:1px solid var(--border-2);border-radius:var(--radius);min-width:0}
+.ans-pane{width:380px;flex-shrink:0;display:flex;flex-direction:column;overflow:hidden;background:var(--card);border:1px solid var(--border-2);border-radius:var(--radius)}
+/* PDF tabs */
+.pdf-tabs{display:flex;border-bottom:1px solid var(--border-2);background:var(--bg-2);flex-shrink:0;min-height:38px}
+.pdf-tab{flex:1;padding:8px 6px;text-align:center;cursor:pointer;font-size:11px;font-weight:700;color:var(--text-sub);border:none;background:none;border-bottom:2px solid transparent;transition:.2s;font-family:var(--font-mono);min-height:36px}
+.pdf-tab:hover{color:var(--text)}
+.pdf-tab.active{color:var(--neon-cyan);border-bottom-color:var(--neon-cyan);background:rgba(0,245,255,.05)}
+.pdf-tab .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--text-dim);margin-left:4px;vertical-align:middle}
+.pdf-tab .dot.on{background:var(--neon-green);box-shadow:0 0 4px var(--neon-green)}
+/* PDF frame */
+.pdf-frame-wrap{flex:1;position:relative;background:#1a1a1a;overflow:auto;-webkit-overflow-scrolling:touch;min-height:200px}
+.pdf-img-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;padding:6px;width:100%;box-sizing:border-box}
+.pdf-page-img{max-width:100%;height:auto;display:block;box-shadow:0 2px 12px rgba(0,0,0,.5);border-radius:2px}
+.pdf-loading{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:var(--text-sub);font-size:13px;text-align:center;z-index:5}
+.pdf-loading .spinner{display:inline-block;width:28px;height:28px;border:3px solid rgba(0,245,255,.2);border-top-color:var(--neon-cyan);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pdf-empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--text-sub);text-align:center;padding:20px}
+.pdf-empty-icon{font-size:40px;opacity:.6}
+.pdf-actions{padding:6px 10px;border-top:1px solid var(--border-2);background:var(--bg-2);display:flex;gap:6px;flex-shrink:0}
+/* Answer pane */
+.paper-tabs-mob{display:none;border-bottom:1px solid var(--border-2);background:var(--bg-2);flex-shrink:0}
+.paper-tab-mob{flex:1;padding:8px;text-align:center;cursor:pointer;font-size:12px;font-weight:600;color:var(--text-sub);border:none;background:none;border-bottom:2px solid transparent;min-height:36px}
+.paper-tab-mob.active{color:var(--neon-cyan);border-bottom-color:var(--neon-cyan)}
+.paper-tab-mob .cnt{display:inline-block;margin-left:4px;font-size:10px;background:var(--card);padding:1px 5px;border-radius:4px;font-family:var(--font-mono)}
+.ans-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px}
+.ans-footer{padding:8px;border-top:1px solid var(--border-2);background:var(--bg-2);display:flex;gap:6px;align-items:center;flex-shrink:0}
+/* Question rows */
+.paper-block{margin-bottom:10px}
+.qg-title{font-family:var(--font-mono);font-size:11px;color:var(--text-sub);padding:6px 8px;background:var(--bg-2);border-radius:6px;margin-bottom:4px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.tag-req{font-size:9px;background:rgba(255,77,109,.15);color:var(--neon-red);padding:1px 5px;border-radius:3px}
+.tag-sel{font-size:9px;background:rgba(255,240,74,.15);color:var(--neon-yellow);padding:1px 5px;border-radius:3px}
+.tag-multi{font-size:9px;background:rgba(255,110,199,.15);color:var(--neon-magenta);padding:1px 5px;border-radius:3px}
+.pick-cnt{font-size:10px;font-family:var(--font-mono);color:var(--text-dim)}
+.pick-cnt.ok{color:var(--neon-green)}
+.pick-cnt.over{color:var(--neon-red)}
+.q-row{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:6px;transition:.15s;flex-wrap:wrap;min-height:40px}
+.q-row:hover{background:rgba(255,255,255,.03)}
+.q-row.answered{background:rgba(0,245,255,.04)}
+.q-row.correct{background:rgba(57,255,136,.08)}
+.q-row.wrong{background:rgba(255,77,109,.08)}
+.q-row.invalid{background:rgba(255,240,74,.06)}
+.q-row.hl{animation:hl 1s ease}
+@keyframes hl{0%{background:rgba(0,245,255,.3)}100%{background:transparent}}
+.q-num{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);width:50px;flex-shrink:0}
+.q-mark{width:20px;text-align:center;font-size:14px;font-weight:700;flex-shrink:0}
+.q-choices{display:flex;gap:4px;flex-wrap:wrap}
+.q-choice{min-width:32px;min-height:32px;padding:4px 8px;border:1px solid var(--border-2);border-radius:6px;background:var(--card);color:var(--text-sub);font-size:12px;font-family:var(--font-mono);cursor:pointer;transition:.15s}
+.q-choice:hover{border-color:var(--neon-cyan)}
+.q-choice:active{transform:scale(.9)}
+.q-choice.sel{background:var(--neon-cyan);color:var(--bg);border-color:var(--neon-cyan)}
+.q-choice.correct-ans{background:var(--neon-green);color:var(--bg);border-color:var(--neon-green)}
+.q-choice.wrong-ans{background:var(--neon-red);color:#fff;border-color:var(--neon-red)}
+.q-choice.show-ok{opacity:.5}
+.q-stat{font-family:var(--font-mono);font-size:10px;width:32px;text-align:right;flex-shrink:0}
+.q-stat.good{color:var(--neon-green)}
+.q-stat.bad{color:var(--neon-red)}
+/* Buttons */
+.btn{padding:8px 16px;border-radius:8px;border:1px solid var(--border-2);background:var(--card);color:var(--text);font-size:13px;cursor:pointer;transition:.2s;font-weight:600;min-height:38px}
+.btn:hover{border-color:var(--neon-cyan)}
+.btn:active{transform:scale(.96)}
+.btn-primary{background:var(--neon-cyan);color:var(--bg);border-color:var(--neon-cyan)}
+.btn-secondary{background:var(--card)}
+.btn-danger{background:var(--neon-red);color:#fff;border-color:var(--neon-red)}
+.btn-magenta{background:var(--neon-magenta);color:#fff;border-color:var(--neon-magenta)}
+.btn-sm{padding:5px 10px;font-size:11px;min-height:30px}
+.btn-icon{padding:6px 8px;min-width:34px}
+/* Result screen */
+.result-wrap{max-width:800px;margin:0 auto}
+.result-hero{text-align:center;padding:24px;background:var(--card);border:1px solid var(--border-2);border-radius:var(--radius);margin-bottom:16px}
+.result-score{font-family:var(--font-mono);font-size:48px;font-weight:700;color:var(--neon-cyan)}
+.result-score .unit{font-size:18px;color:var(--text-sub)}
+.result-label{font-size:13px;color:var(--text-sub);margin-top:4px;font-family:var(--font-mono)}
+.result-verdict{margin-top:8px;font-family:var(--font-mono);font-size:16px;font-weight:700;padding:6px 16px;border-radius:8px;display:inline-block}
+.result-verdict.pass{color:var(--neon-green);background:rgba(57,255,136,.1)}
+.result-verdict.fail{color:var(--neon-red);background:rgba(255,77,109,.1)}
+.pass-criteria{background:var(--card);border:1px solid var(--border-2);border-radius:var(--radius);padding:14px;margin-bottom:16px}
+.pass-criteria h3{font-size:13px;font-family:var(--font-mono);margin-bottom:10px}
+.bar-block{margin-bottom:12px}
+.bar-label{display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;font-family:var(--font-mono)}
+.bar-label .ratio.ok{color:var(--neon-green)}
+.bar-label .ratio.ng{color:var(--neon-red)}
+.bar-track{position:relative;height:8px;background:var(--bg-2);border-radius:4px;overflow:visible}
+.bar-fill{height:100%;border-radius:4px;transition:width .5s ease}
+.bar-fill.ok{background:linear-gradient(90deg,var(--neon-green),var(--neon-cyan))}
+.bar-fill.ng{background:linear-gradient(90deg,var(--neon-red),var(--neon-orange))}
+.bar-threshold{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--text-sub)}
+.bar-foot{font-size:10px;color:var(--text-sub);margin-top:3px;font-family:var(--font-mono)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.stat-card{background:var(--card);border:1px solid var(--border-2);border-radius:8px;padding:10px;text-align:center}
+.stat-val{font-family:var(--font-mono);font-size:18px;font-weight:700;color:var(--neon-cyan)}
+.stat-lbl{font-size:10px;color:var(--text-sub);font-family:var(--font-mono)}
+.section-card{background:var(--card);border:1px solid var(--border-2);border-radius:var(--radius);padding:14px;margin-bottom:16px}
+.section-card h3{font-size:13px;font-family:var(--font-mono);display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px}
+.section-card h3 .acts{display:flex;gap:4px;flex-wrap:wrap}
+.detail-tabs{display:flex;gap:4px;margin-bottom:10px}
+.detail-tab{padding:4px 10px;font-size:11px;border:1px solid var(--border-2);border-radius:6px;background:none;color:var(--text-sub);cursor:pointer;min-height:28px}
+.detail-tab.active{color:var(--neon-cyan);border-color:var(--neon-cyan)}
+.detail-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:4px}
+.d-cell{padding:6px;border-radius:6px;text-align:center;font-family:var(--font-mono);cursor:pointer;transition:.15s;min-height:50px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.d-cell:hover{transform:scale(1.05)}
+.d-cell.correct{background:rgba(57,255,136,.1);border:1px solid rgba(57,255,136,.3)}
+.d-cell.wrong{background:rgba(255,77,109,.1);border:1px solid rgba(255,77,109,.3)}
+.d-cell.invalid{background:rgba(255,240,74,.08);border:1px solid rgba(255,240,74,.2)}
+.d-cell.unanswered{background:var(--bg-2);border:1px solid var(--border-2)}
+.d-cell .qn{font-size:11px;font-weight:700}
+.d-cell .mk{font-size:14px}
+.d-cell .as{font-size:8px;color:var(--text-sub);margin-top:2px;line-height:1.2}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:10px;color:var(--text-sub);margin-top:8px;font-family:var(--font-mono)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:middle}
+.legend i.correct{background:var(--neon-green)}
+.legend i.wrong{background:var(--neon-red)}
+.legend i.invalid{background:var(--neon-yellow)}
+canvas{max-width:100%}
+/* Weak list (result) */
+.weak-list-full{display:flex;flex-direction:column;gap:4px}
+.weak-item{display:flex;align-items:center;gap:10px;padding:8px;border-radius:6px;cursor:pointer;transition:.15s;background:var(--bg-2)}
+.weak-item:hover{background:var(--card-2)}
+.weak-item:active{transform:scale(.98)}
+.weak-rnk{font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--text-dim);width:24px;text-align:center}
+.weak-rnk.top{color:var(--neon-orange)}
+.weak-info{flex:1}
+.weak-title{font-size:12px;font-weight:600}
+.weak-sub{font-size:10px;color:var(--text-sub);font-family:var(--font-mono)}
+.weak-pct2{font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--neon-red)}
+/* History table */
+.hist-wrap{overflow-x:auto}
+.hist-table{width:100%;border-collapse:collapse;font-size:11px;font-family:var(--font-mono)}
+.hist-table th{padding:6px 8px;text-align:left;color:var(--text-sub);border-bottom:1px solid var(--border);white-space:nowrap}
+.hist-table td{padding:6px 8px;border-bottom:1px solid var(--border-2);white-space:nowrap}
+.hist-table td.sc.pass{color:var(--neon-green)}
+.hist-table td.sc.fail{color:var(--neon-red)}
+.hist-table tr:hover{background:rgba(255,255,255,.02)}
+/* Guide */
+.guide-wrap{max-width:800px;margin:0 auto}
+.guide-hero{text-align:center;padding:24px;background:var(--card);border:1px solid var(--border-2);border-radius:var(--radius);margin-bottom:16px}
+.guide-hero h2{font-family:var(--font-mono);color:var(--neon-cyan);font-size:20px}
+.guide-hero p{font-size:13px;color:var(--text-sub);margin-top:6px}
+.guide-toc{background:var(--card);border:1px solid var(--border-2);border-radius:var(--radius);padding:14px;margin-bottom:16px}
+.guide-toc h4{font-family:var(--font-mono);font-size:12px;color:var(--text-sub);margin-bottom:8px}
+.guide-toc a{display:block;font-size:13px;color:var(--neon-cyan);text-decoration:none;padding:3px 0}
+.guide-toc a:hover{text-decoration:underline}
+.guide-ch{background:var(--card);border:1px solid var(--border-2);border-radius:var(--radius);padding:16px;margin-bottom:16px;scroll-margin-top:60px}
+.guide-ch h3{font-size:15px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.guide-ch h3 .cn{font-family:var(--font-mono);font-size:20px;color:var(--neon-cyan)}
+.guide-ch p{font-size:13px;line-height:1.7;margin-bottom:8px}
+.guide-ch h4{font-size:13px;font-family:var(--font-mono);color:var(--text-sub);margin:10px 0 6px}
+.g-table{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0}
+.g-table th,.g-table td{padding:6px 10px;border:1px solid var(--border-2);text-align:left}
+.g-table th{background:var(--bg-2);font-family:var(--font-mono);font-size:11px}
+.g-callout{background:rgba(0,245,255,.05);border-left:3px solid var(--neon-cyan);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:12px}
+.mode-cards{display:flex;gap:8px;margin:10px 0}
+.mode-card{flex:1;padding:10px;border-radius:8px;text-align:center;border:1px solid var(--border-2)}
+.mode-card.c{background:rgba(0,245,255,.06);border-color:var(--neon-cyan)}
+.mode-card.m{background:rgba(255,240,74,.06);border-color:var(--neon-yellow)}
+.mode-card.p{background:rgba(255,110,199,.06);border-color:var(--neon-magenta)}
+.mode-card-t{font-size:14px;font-weight:700}
+.mode-card-sub{font-size:9px;color:var(--text-sub);font-family:var(--font-mono)}
+.phase-b{margin:8px 0;padding:10px;border-radius:8px;background:var(--bg-2);border:1px solid var(--border-2)}
+.phase-b.p2{border-left:3px solid var(--neon-yellow)}
+.phase-b.p3{border-left:3px solid var(--neon-orange)}
+.phase-b.p4{border-left:3px solid var(--neon-red)}
+.phase-t{font-family:var(--font-mono);font-size:12px;font-weight:700;margin-bottom:4px}
+/* Analytics */
+.analytics-wrap{max-width:900px;margin:0 auto}
+.analytics-tabs{display:flex;gap:4px;margin-bottom:16px;flex-wrap:wrap}
+.analytics-tab{padding:8px 14px;font-size:12px;border:1px solid var(--border-2);border-radius:8px;background:var(--card);color:var(--text-sub);cursor:pointer;transition:.2s;min-height:36px}
+.analytics-tab.active{color:var(--neon-cyan);border-color:var(--neon-cyan);background:rgba(0,245,255,.05)}
+.analytics-pane{display:none}
+.analytics-pane.active{display:block}
+.achart{width:100%!important}
+.year-compare-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.year-compare-card{background:var(--bg-2);border:1px solid var(--border-2);border-radius:8px;padding:10px;text-align:center}
+.year-compare-card .yc-name{font-family:var(--font-mono);font-size:12px;color:var(--text-sub)}
+.year-compare-card .yc-best{font-family:var(--font-mono);font-size:22px;font-weight:700;color:var(--neon-cyan);margin:4px 0}
+.year-compare-card .yc-best.fail{color:var(--neon-red)}
+.year-compare-card .yc-info{font-size:10px;color:var(--text-dim);font-family:var(--font-mono)}
+.cat-advice{display:flex;flex-direction:column;gap:8px}
+.cat-advice-item{background:var(--bg-2);border:1px solid var(--border-2);border-radius:8px;padding:10px;display:flex;gap:10px;align-items:flex-start}
+.cat-advice-icon{font-size:20px;flex-shrink:0}
+.cat-advice-info{flex:1}
+.cat-advice-name{font-size:13px;font-weight:600}
+.cat-advice-rate{font-family:var(--font-mono);font-size:11px;color:var(--text-sub)}
+.cat-advice-rate .ok{color:var(--neon-green)}
+.cat-advice-rate .ng{color:var(--neon-red)}
+.cat-advice-text{font-size:11px;color:var(--text-sub);margin-top:4px;line-height:1.5}
+/* Modals */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:200;padding:16px}
+.modal-bg.show{display:flex}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);max-width:600px;width:100%;max-height:85vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.modal-hd{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--border-2)}
+.modal-hd h2{font-family:var(--font-mono);font-size:15px;color:var(--neon-cyan)}
+.modal-body{padding:16px}
+.modal-ft{padding:12px 16px;border-top:1px solid var(--border-2);display:flex;justify-content:flex-end;gap:8px}
+.info-note{background:var(--bg-2);border-radius:8px;padding:10px 12px;font-size:12px;line-height:1.6;margin-bottom:12px}
+.pdf-slot{background:var(--bg-2);border:1px solid var(--border-2);border-radius:8px;padding:10px;margin-bottom:10px}
+.pdf-slot-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:13px;font-weight:600}
+.pdf-slot-status{font-size:10px;font-family:var(--font-mono);padding:2px 6px;border-radius:4px}
+.pdf-slot-status.pss-url{background:rgba(0,245,255,.1);color:var(--neon-cyan)}
+.pdf-slot-status.pss-file{background:rgba(57,255,136,.1);color:var(--neon-green)}
+.pdf-slot-status.pss-empty{background:rgba(255,77,109,.1);color:var(--neon-red)}
+.pdf-slot input[type=url]{width:100%;padding:8px;border:1px solid var(--border-2);border-radius:6px;background:var(--bg);color:var(--text);font-size:12px;margin-bottom:6px}
+.file-drop{display:block;padding:14px;text-align:center;border:2px dashed var(--border-2);border-radius:8px;font-size:12px;color:var(--text-sub);cursor:pointer;transition:.2s}
+.file-drop:hover{border-color:var(--neon-cyan);color:var(--neon-cyan)}
+.file-drop input{display:none}
+.set-section{margin-bottom:16px}
+.set-section-title{font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--neon-cyan);margin-bottom:8px}
+.set-row{margin-bottom:10px}
+.set-row label{display:block;font-size:12px;color:var(--text-sub);margin-bottom:4px}
+.set-row input{width:100%;padding:8px;border:1px solid var(--border-2);border-radius:6px;background:var(--bg);color:var(--text);font-size:12px}
+.set-status{font-size:11px;font-family:var(--font-mono);padding:6px 0}
+.set-status.ok{color:var(--neon-green)}
+.set-status.err{color:var(--neon-red)}
+.gist-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+/* Toast */
+.toast{position:fixed;bottom:72px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--neon-cyan);color:var(--text);padding:10px 20px;border-radius:8px;font-size:13px;z-index:300;opacity:0;transition:.25s;pointer-events:none;max-width:90%;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,.4)}
+.toast.show{opacity:1;bottom:80px}
+.toast.success{border-color:var(--neon-green)}
+.toast.error{border-color:var(--neon-red)}
+.toast.danger{border-color:var(--neon-red);background:rgba(255,77,109,.15)}
+/* Responsive */
+@media(max-width:900px){
+  .exam-container{flex-direction:column;gap:6px}
+  .pdf-pane{flex:none;height:50vh;min-height:200px}
+  .ans-pane{width:100%;flex:1;min-height:0}
+  .paper-tabs-mob{display:flex}
+  .dash-stats{grid-template-columns:repeat(2,1fr)}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+  .screen{padding:10px}
+  .app-header .logo{font-size:13px}
+  .icon-btn{padding:5px 8px;font-size:14px;min-width:32px;min-height:32px}
+  .year-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+  .result-score{font-size:36px}
+  .mode-tab{padding:5px 10px;font-size:11px}
+  .exam-year-label{font-size:11px}
+  .q-num{width:42px;font-size:10px}
+  .q-choice{min-width:28px;min-height:28px;font-size:11px;padding:3px 6px}
+  .detail-grid{grid-template-columns:repeat(auto-fill,minmax(70px,1fr))}
+}
+@media(max-width:400px){
+  .dash-stats{grid-template-columns:1fr 1fr}
+  .mode-tabs{flex-wrap:wrap}
+  .bnav-btn{font-size:9px}
+  .bnav-icon{font-size:16px}
+}
+/* Hidden on mobile */
+.paper-block.hidden-mobile{display:none}
+/* Print */
+@media print{
+  .app-header,.bottom-nav,.pdf-actions,.ans-footer{display:none}
+  #mainArea{position:static;overflow:visible}
+}
+</style>
+
+  <link rel="manifest" href="/kanmaster03/manifest.json">
+  <meta name="theme-color" content="#4100a3">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="1級管MASTER">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="apple-touch-icon" href="/kanmaster03/icon-192.png">
+  <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('/kanmaster03/sw.js').catch(()=>{});});}</script>
+</head>
+<body>
+<!-- Header -->
+<header class="app-header">
+  <span class="logo">KAN MASTER</span>
+  <span class="spacer"></span>
+  <button class="icon-btn" id="printBtn" title="印刷" style="display:none">🖨</button>
+  <button class="icon-btn" id="analyticsBtn" title="分析">📈</button>
+  <button class="icon-btn" id="settingsBtn" title="設定">⚙<span class="sync-dot" id="syncDot"></span></button>
+  <button class="icon-btn" id="themeBtn" title="テーマ">🌓</button>
+  <button class="icon-btn" id="homeBtn" title="ホーム">⌂</button>
+</header>
+
+<!-- Main -->
+<div id="mainArea">
+
+  <!-- HOME -->
+  <section class="screen active" id="screen-home">
+    <div class="sec-head">
+      <div class="sec-title">◤ SELECT YEAR ◢</div>
+      <div class="sec-sub">年度を選んで演習を開始 · 1級管工事施工管理技士 1次試験</div>
+    </div>
+    <div class="dash-stats" id="dashStats">
+      <div class="dash-stat"><div class="dash-stat-val" id="dsTotalAttempts">0</div><div class="dash-stat-lbl">TOTAL</div></div>
+      <div class="dash-stat green"><div class="dash-stat-val" id="dsBestScore">—</div><div class="dash-stat-lbl">BEST</div></div>
+      <div class="dash-stat magenta"><div class="dash-stat-val" id="dsAvgScore">—</div><div class="dash-stat-lbl">AVG</div></div>
+      <div class="dash-stat yellow"><div class="dash-stat-val" id="dsPassRate">—</div><div class="dash-stat-lbl">PASS%</div></div>
+    </div>
+    <div class="year-grid" id="yearGrid"></div>
+    <div class="home-weak" id="homeWeak" style="display:none">
+      <h3>🔥 苦手問題 TOP 5</h3>
+      <div id="homeWeakList"></div>
+    </div>
+  </section>
+
+  <!-- EXAM -->
+  <section class="screen" id="screen-exam">
+    <div class="exam-outer">
+      <div class="exam-topbar">
+        <button class="icon-btn" onclick="goHome()" title="ホーム">←</button>
+        <span class="exam-year-label" id="examYearLabel">—</span>
+        <span style="flex:1"></span>
+        <div class="mode-tabs" id="modeTabs">
+          <button class="mode-tab active" data-mode="practice">演習</button>
+          <button class="mode-tab" data-mode="exam">模試</button>
+          <button class="mode-tab" data-mode="review">復習</button>
+        </div>
+        <span style="flex:1;display:flex;justify-content:flex-end;gap:6px;align-items:center">
+          <span class="prog-label">ANS <span class="num" id="progressAnswered">0</span>/<span id="progressNeeded">0</span></span>
+          <span class="timer" id="timer" style="display:none">00:00</span>
+        </span>
+      </div>
+      <div class="exam-container">
+        <div class="pdf-pane">
+          <div class="pdf-tabs" id="pdfTabs"></div>
+          <div class="pdf-frame-wrap" id="pdfFrameWrap">
+            <div class="pdf-empty" id="pdfEmpty">
+              <div class="pdf-empty-icon">📄</div>
+              <div style="font-size:12px">PDFが設定されていません</div>
+              <button class="btn btn-primary btn-sm" onclick="openPdfModal()">PDFを設定</button>
+            </div>
+          </div>
+          <div class="pdf-actions">
+            <button class="btn btn-secondary btn-sm" onclick="openPdfModal()">📎 PDF管理</button>
+            <button class="btn btn-secondary btn-sm" onclick="openPdfNewTab()">↗ 別タブ</button>
+          </div>
+        </div>
+        <div class="ans-pane">
+          <div class="paper-tabs-mob" id="paperTabsMob">
+            <button class="paper-tab-mob active" data-paper="mondaiA">📘 A<span class="cnt" id="mbA">0</span></button>
+            <button class="paper-tab-mob" data-paper="mondaiB">📗 B<span class="cnt" id="mbB">0</span></button>
+          </div>
+          <div class="ans-body" id="ansBody"></div>
+          <div class="ans-footer">
+            <button class="btn btn-secondary btn-icon" onclick="jumpUnanswered()" title="次の未回答">⬇</button>
+            <button class="btn btn-secondary btn-sm" onclick="resetAnswers()">CLR</button>
+            <button class="btn btn-primary" onclick="submitAnswers()" style="flex:1">採点 →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section class="screen" id="screen-result">
+    <div class="result-wrap">
+      <div class="result-hero">
+        <div class="result-score"><span id="resultScore">0</span><span class="unit">点</span></div>
+        <div class="result-label" id="resultLabel">正答率 0%（0/0問）</div>
+        <div class="result-verdict" id="resultVerdict">判定中</div>
+      </div>
+      <div class="pass-criteria" id="passCriteria">
+        <h3>🎯 合格基準判定</h3>
+        <div id="passBars"></div>
+      </div>
+      <div class="stats-grid" id="resultStats"></div>
+      <div class="section-card">
+        <h3><span>📋 回答詳細</span><span class="acts"><button class="btn btn-secondary btn-sm" onclick="reviewResult()">復習</button></span></h3>
+        <div class="detail-tabs">
+          <button class="detail-tab active" data-dtab="all">すべて</button>
+          <button class="detail-tab" data-dtab="wrong">誤答</button>
+          <button class="detail-tab" data-dtab="unanswered">未回答</button>
+        </div>
+        <div id="detailContent"></div>
+        <div class="legend">
+          <span><i class="correct"></i>正解</span>
+          <span><i class="wrong"></i>不正解</span>
+          <span><i class="invalid"></i>採点外</span>
+          <span>— 未回答</span>
+        </div>
+      </div>
+      <div class="section-card">
+        <h3><span>📊 スコア推移</span><span class="acts"><button class="btn btn-secondary btn-sm" onclick="filterHistToggle()">切替</button></span></h3>
+        <canvas id="scoreChart"></canvas>
+      </div>
+      <div class="section-card">
+        <h3>🔥 苦手問題 TOP10</h3>
+        <div id="weakList"></div>
+      </div>
+      <div class="section-card">
+        <h3><span>📝 受験履歴</span><span class="acts"><button class="btn btn-secondary btn-sm" onclick="clearAllHistConfirm()">🗑</button></span></h3>
+        <div id="histList"></div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+        <button class="btn btn-primary" onclick="goScreen('exam')">もう一度</button>
+        <button class="btn btn-magenta" onclick="reviewResult()">復習表示</button>
+        <button class="btn btn-secondary" onclick="goHome()">ホームへ</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- GUIDE -->
+  <section class="screen" id="screen-guide">
+    <div class="guide-wrap">
+      <div class="guide-hero">
+        <h2>◤ LEARNING GUIDE ◢</h2>
+        <p>忘却曲線に基づく効率的な1次試験攻略法</p>
+      </div>
+      <div class="guide-toc">
+        <h4>◆ CONTENTS</h4>
+        <a href="#gc1">01 このアプリの使い方</a>
+        <a href="#gc2">02 忘却曲線とは</a>
+        <a href="#gc3">03 社会人のスキマ学習法</a>
+        <a href="#gc4">04 結果画面の読み方</a>
+        <a href="#gc5">05 推奨スケジュール</a>
+      </div>
+      <div class="guide-ch" id="gc1">
+        <h3><span class="cn">01</span>このアプリの使い方</h3>
+        <p>KAN MASTERは、<strong>1級管工事施工管理技士1次試験の過去5年分（令和3〜7年）</strong>を、忘却曲線に基づいた効率学習で攻略するツールです。</p>
+        <div class="mode-cards">
+          <div class="mode-card c"><div class="mode-card-t">演習</div><div class="mode-card-sub">PRACTICE</div></div>
+          <div class="mode-card m"><div class="mode-card-t">模試</div><div class="mode-card-sub">EXAM MODE</div></div>
+          <div class="mode-card p"><div class="mode-card-t">復習</div><div class="mode-card-sub">REVIEW MODE</div></div>
+        </div>
+        <h4>▶ 操作手順</h4>
+        <p><strong>① 年度を選ぶ</strong> → <strong>② PDF問題文を見ながら番号をタップ</strong> → <strong>③「採点」ボタン</strong> → <strong>④ 結果画面で弱点確認</strong></p>
+        <div class="g-callout">演習モードは即時採点、模試モードは制限時間付き（165分）、復習モードは正解/不正解を色分け表示します。</div>
+      </div>
+      <div class="guide-ch" id="gc2">
+        <h3><span class="cn">02</span>忘却曲線とは</h3>
+        <p>19世紀の心理学者 <strong>ヘルマン・エビングハウス</strong> の研究により、人は学習後 <strong>1時間で約56%、1日後に67%、1週間後に77%</strong>を忘れます。</p>
+        <p>しかし「<strong>忘れかけたタイミングで復習</strong>」を繰り返すことで、記憶は長期定着します。これが最も効率的な暗記法の核心です。</p>
+        <h4>▶ 理想的な復習タイミング</h4>
+        <table class="g-table"><thead><tr><th>回</th><th>タイミング</th><th>目安</th></tr></thead><tbody>
+          <tr><td>1回目</td><td>学習当日</td><td>10分</td></tr>
+          <tr><td>2回目</td><td>翌日</td><td>5分</td></tr>
+          <tr><td>3回目</td><td>1週間後</td><td>3分</td></tr>
+          <tr><td>4回目</td><td>2週間後</td><td>2分</td></tr>
+          <tr><td>5回目</td><td>1か月後</td><td>1〜2分</td></tr>
+        </tbody></table>
+      </div>
+      <div class="guide-ch" id="gc3">
+        <h3><span class="cn">03</span>社会人のスキマ学習法</h3>
+        <p>社会人受験者の最大の課題は「<strong>まとまった時間が取れない</strong>」こと。調査では現代人には平均<strong>1日69分</strong>のスキマ時間があります。</p>
+        <p>1級管工事の合格ラインは<strong>総合60%（36/60問）かつ応用能力50%以上</strong>。4割は落としていい試験です。完璧を目指さず、頻出パターンの確実な積み上げが最善策です。</p>
+        <table class="g-table"><thead><tr><th>時間</th><th>タイプ</th><th>内容</th></tr></thead><tbody>
+          <tr><td>5分</td><td>MICRO</td><td>電車待ち・昼食後。5問だけタップ。</td></tr>
+          <tr><td>15分</td><td>MINI</td><td>通勤・昼休み。15〜20問の集中復習。</td></tr>
+          <tr><td>45分</td><td>WEEKEND</td><td>週末に年度別の通し演習。模試モードで。</td></tr>
+        </tbody></table>
+      </div>
+      <div class="guide-ch" id="gc4">
+        <h3><span class="cn">04</span>結果画面の読み方</h3>
+        <table class="g-table"><thead><tr><th>指標</th><th>意味</th><th>目標</th></tr></thead><tbody>
+          <tr><td>総合得点</td><td>60問中の正答率</td><td>60%以上</td></tr>
+          <tr><td>応用能力</td><td>問題B No.22-29の正答率</td><td>50%以上（足切り）</td></tr>
+          <tr><td>苦手TOP10</td><td>過去履歴から自動集計</td><td>直前の最優先復習リスト</td></tr>
+        </tbody></table>
+      </div>
+      <div class="guide-ch" id="gc5">
+        <h3><span class="cn">05</span>推奨スケジュール（6ヶ月）</h3>
+        <div class="phase-b"><div class="phase-t">▶ PHASE 01｜基礎期（6〜4か月前）</div><p style="font-size:12px;line-height:1.6">過去5年分を演習モードで一周。分からなくても正解を見てパターンを掴む。</p></div>
+        <div class="phase-b p2"><div class="phase-t">▶ PHASE 02｜拡張期（4〜2か月前）</div><p style="font-size:12px;line-height:1.6">模試モードで時間制限付き演習。60%越えを目標に。</p></div>
+        <div class="phase-b p3"><div class="phase-t">▶ PHASE 03｜弱点期（2〜1か月前）</div><p style="font-size:12px;line-height:1.6">苦手TOP10を集中特訓。応用能力（足切り）の克服を優先。</p></div>
+        <div class="phase-b p4"><div class="phase-t">▶ PHASE 04｜仕上げ期（直前1か月）</div><p style="font-size:12px;line-height:1.6">直近3年分を模試モードで通し。復習モードで最終確認。</p></div>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="btn btn-primary" onclick="goHome()" style="max-width:280px">▶ 演習を始める</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ANALYTICS -->
+  <section class="screen" id="screen-analytics">
+    <div class="analytics-wrap">
+      <div class="sec-head">
+        <div class="sec-title">◤ ANALYTICS ◢</div>
+        <div class="sec-sub">学習データ分析・弱点アドバイス</div>
+      </div>
+      <div class="analytics-tabs">
+        <button class="analytics-tab active" data-atab="trend">📈 スコア推移</button>
+        <button class="analytics-tab" data-atab="compare">📊 年度比較</button>
+        <button class="analytics-tab" data-atab="category">🔥 分野別</button>
+        <button class="analytics-tab" data-atab="history">📝 全履歴</button>
+      </div>
+      <div class="analytics-pane active" id="apane-trend">
+        <div class="section-card">
+          <h3><span>📈 スコア推移（直近30件）</span><span class="acts">
+            <button class="btn btn-secondary btn-sm" onclick="setAnalyticsFilter('all')">全年度</button>
+            <button class="btn btn-secondary btn-sm" onclick="showYearFilterMenu()">年度指定</button>
+          </span></h3>
+          <canvas id="aChartTrend" class="achart" height="220"></canvas>
+        </div>
+        <div class="section-card">
+          <h3>🎯 応用能力スコア推移</h3>
+          <canvas id="aChartApplied" class="achart" height="160"></canvas>
+        </div>
+      </div>
+      <div class="analytics-pane" id="apane-compare">
+        <div class="section-card">
+          <h3>📊 年度別ベストスコア比較</h3>
+          <div class="year-compare-grid" id="yearCompareGrid"></div>
+        </div>
+        <div class="section-card">
+          <h3>📋 年度別統計サマリー</h3>
+          <div id="yearStatTable"></div>
+        </div>
+      </div>
+      <div class="analytics-pane" id="apane-category">
+        <div class="section-card">
+          <h3>🔥 分野別正答率</h3>
+          <canvas id="aChartCategory" class="achart" height="280"></canvas>
+        </div>
+        <div class="section-card">
+          <h3><span>💡 弱点アドバイス</span><span class="acts"><button class="btn btn-secondary btn-sm" id="adviceYearBtn" onclick="cycleAdviceYear()">全年度</button></span></h3>
+          <div id="catAdviceList" class="cat-advice"></div>
+        </div>
+      </div>
+      <div class="analytics-pane" id="apane-history">
+        <div class="section-card">
+          <h3><span>📝 全受験履歴</span><span class="acts">
+            <button class="btn btn-secondary btn-sm" onclick="exportDataJSON()">⬇Export</button>
+            <button class="btn btn-danger btn-sm" onclick="clearAllHistConfirm()">🗑</button>
+          </span></h3>
+          <div id="aHistList"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /mainArea -->
+
+<!-- Bottom nav -->
+<nav class="bottom-nav">
+  <button class="bnav-btn active" id="bnavHome" onclick="goHome()"><span class="bnav-icon">⌂</span>HOME</button>
+  <button class="bnav-btn" id="bnavExam" onclick="bnavToExam()"><span class="bnav-icon">📝</span>演習</button>
+  <button class="bnav-btn" id="bnavResult" onclick="bnavToResult()"><span class="bnav-icon">📊</span>結果</button>
+  <button class="bnav-btn" id="bnavAnalytics" onclick="goScreen('analytics');renderAnalytics()"><span class="bnav-icon">📈</span>分析</button>
+  <button class="bnav-btn" id="bnavGuide" onclick="goScreen('guide')"><span class="bnav-icon">📖</span>ガイド</button>
+</nav>
+
+<!-- PDF Modal -->
+<div class="modal-bg" id="pdfModal">
+  <div class="modal">
+    <div class="modal-hd"><h2>◆ PDF SETTINGS</h2><button class="icon-btn" onclick="closePdfModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="info-note"><strong>💡 PDFの設定方法</strong><br>・<strong>URL</strong>: デフォルトURLが設定済み。変更可。<br>・<strong>ファイル</strong>: PDFファイルをアップロード（端末内保存）。</div>
+      <div id="pdfSlots"></div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-secondary btn-sm" onclick="closePdfModal()">キャンセル</button>
+      <button class="btn btn-primary btn-sm" onclick="savePdfSettings()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- Settings Modal -->
+<div class="modal-bg" id="settingsModal">
+  <div class="modal" style="max-width:540px">
+    <div class="modal-hd"><h2>⚙ SETTINGS &amp; DATA SYNC</h2><button class="icon-btn" onclick="closeSettingsModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="set-section">
+        <div class="set-section-title">🔄 GitHub Gist 自動同期</div>
+        <div class="info-note"><strong>💡 同期の仕組み</strong><br>GitHub PAT (gist スコープ) を設定すると、採点ごとに学習履歴を Gist へ自動バックアップします。</div>
+        <div class="set-row"><label>Personal Access Token (gist)</label><input type="password" id="gistPatInput" placeholder="ghp_xxxxxxxxxxxx" autocomplete="new-password"></div>
+        <div class="set-row"><label>Gist ID（空欄で新規作成）</label><input type="text" id="gistIdInput" placeholder="既存Gist ID"></div>
+        <div class="set-status" id="gistStatus"></div>
+        <div class="gist-actions">
+          <button class="btn btn-primary btn-sm" onclick="saveGistSettings()">💾 保存</button>
+          <button class="btn btn-secondary btn-sm" onclick="syncToGist()">⬆ 送信</button>
+          <button class="btn btn-secondary btn-sm" onclick="syncFromGist()">⬇ 読込</button>
+          <button class="btn btn-secondary btn-sm" onclick="openGist()">↗ 開く</button>
+        </div>
+      </div>
+      <div class="set-section">
+        <div class="set-section-title">📦 データ管理</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-secondary btn-sm" onclick="exportDataJSON()">⬇ JSON Export</button>
+          <label class="btn btn-secondary btn-sm" style="cursor:pointer">⬆ JSON Import<input type="file" accept=".json" id="importFile" style="display:none" onchange="importDataJSON(event)"></label>
+          <button class="btn btn-danger btn-sm" onclick="clearAllHistConfirm()">🗑 リセット</button>
+        </div>
+        <div class="set-status" id="dataStatus"></div>
+      </div>
+      <div class="set-section" style="margin-bottom:0">
+        <div class="set-section-title">ℹ️ アプリ情報</div>
+        <div style="font-size:11px;color:var(--text-sub);font-family:var(--font-mono);line-height:1.8" id="appInfoArea"></div>
+      </div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-secondary btn-sm" onclick="closeSettingsModal()">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- PDF.js (loaded with defer for non-blocking) -->
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" crossorigin="anonymous" onerror="console.warn('PDF.js CDN load failed')"></script>
+
+<script>
+
+/* ============================================================
+   KAN MASTER v12 — 1級管工事施工管理技士 1次試験 過去問演習
+   Complete Rewrite — 2026-07-09
+   ============================================================ */
+
+/* ---- Global Error Handler ---- */
+window.onerror = function(msg, src, line, col, err){
+  console.error('[GLOBAL ERROR]', msg, 'at', src, line+':'+col, err);
+  return false;
+};
+window.addEventListener('unhandledrejection', function(e){
+  console.warn('[UNHANDLED REJECTION]', e.reason);
+});
+
+/* ---- Data ---- */
+const YEARS=[
+  {id:'R7',name:'令和7年',sub:'2025'},
+  {id:'R6',name:'令和6年',sub:'2024'},
+  {id:'R5',name:'令和5年',sub:'2023'},
+  {id:'R4',name:'令和4年',sub:'2022'},
+  {id:'R3',name:'令和3年',sub:'2021'}
+];
+const PDF_SLOTS=[
+  {key:'mondaiA',label:'問題A',icon:'📘'},
+  {key:'mondaiB',label:'問題B',icon:'📗'},
+  {key:'kaitou', label:'解答', icon:'📕'}
+];
+/* Scoring rules */
+const RULES_R6PLUS={
+  mondaiA:[
+    {type:'required',from:1,to:14,label:'必須（No.1-14）'},
+    {type:'choice',from:15,to:37,pick:12,label:'選択（No.15-37・12問選択）'},
+    {type:'required',from:38,to:44,label:'必須（No.38-44）'}
+  ],
+  mondaiB:[
+    {type:'required',from:1,to:9,label:'必須（No.1-9）'},
+    {type:'choice',from:10,to:21,pick:10,label:'選択（No.10-21・10問選択）'},
+    {type:'multi',from:22,to:29,pickPerQ:2,label:'応用能力（No.22-29・各2択）',category:'applied'}
+  ],
+  choices:4,passScoreOverall:60,passScoreApplied:50,timeLimit:165
+};
+const RULES_R5MINUS={
+  mondaiA:[
+    {type:'required',from:1,to:14,label:'必須（No.1-14）'},
+    {type:'choice',from:15,to:37,pick:12,label:'選択（No.15-37・12問選択）'},
+    {type:'required',from:38,to:44,label:'必須（No.38-44）'}
+  ],
+  mondaiB:[
+    {type:'required',from:1,to:10,label:'必須（No.1-10）'},
+    {type:'choice',from:11,to:22,pick:10,label:'選択（No.11-22・10問選択）'},
+    {type:'multi',from:23,to:29,pickPerQ:2,label:'応用能力（No.23-29・各2択）',category:'applied'}
+  ],
+  choices:4,passScoreOverall:60,passScoreApplied:50,timeLimit:165
+};
+function getRules(year){return(year==='R7'||year==='R6')?RULES_R6PLUS:RULES_R5MINUS}
+function mark(arr){return{pick:arr}}
+function isMultiKey(k){return k&&typeof k==='object'&&Array.isArray(k.pick)}
+function isArrayKey(k){return Array.isArray(k)}
+function matchSingle(u,k){if(u==null)return false;if(isArrayKey(k))return k.includes(u);return u===k}
+function matchMulti(u,k){if(!Array.isArray(u)||!isMultiKey(k))return false;const a=[...u].sort(),b=[...k.pick].sort();return a.length===b.length&&a.every((v,i)=>v===b[i])}
+function formatAns(k){if(k==null)return'—';if(isMultiKey(k))return k.pick.join('・');if(isArrayKey(k))return k.join('/');return String(k)}
+function findGroup(groups,q){for(const g of groups)if(q>=g.from&&q<=g.to)return g;return null}
+
+/* ---- PRESET DATA ---- */
+const PRESET={
+  "R7":{
+    pdfUrls:{
+      mondaiA:"https://dobokujira.com/wp-content/uploads/2025/12/R7_1kan_01_mondaiA.pdf",
+      mondaiB:"https://dobokujira.com/wp-content/uploads/2025/12/R7_1kan_01_mondaiB.pdf",
+      kaitou: "https://dobokujira.com/wp-content/uploads/2025/12/R7_1kan_01_kaitou.pdf"
+    },
+    answers:{
+      mondaiA:{1:2,2:3,3:4,4:4,5:3,6:4,7:3,8:4,9:1,10:1,11:2,12:1,13:4,14:2,15:1,16:2,17:2,18:3,19:3,20:3,21:3,22:3,23:2,24:1,25:3,26:2,27:4,28:1,29:4,30:1,31:4,32:1,33:4,34:1,35:4,36:2,37:1,38:2,39:2,40:4,41:3,42:3,43:2,44:1},
+      mondaiB:{1:1,2:4,3:3,4:1,5:2,6:3,7:2,8:1,9:2,10:[3,4],11:3,12:1,13:4,14:4,15:1,16:2,17:4,18:3,19:2,20:4,21:1,22:mark([1,2]),23:mark([2,4]),24:mark([3,4]),25:mark([1,4]),26:mark([1,2]),27:mark([3,4]),28:mark([2,3]),29:mark([1,3])}
+    }
+  },
+  "R6":{
+    pdfUrls:{
+      mondaiA:"https://dobokujira.com/wp-content/uploads/2024/09/R6_1kan_01_mondaiA.pdf",
+      mondaiB:"https://dobokujira.com/wp-content/uploads/2024/09/R6_1kan_01_mondaiB.pdf",
+      kaitou: "https://dobokujira.com/wp-content/uploads/2024/09/R6_1kan_01_kaitou.pdf"
+    },
+    answers:{
+      mondaiA:{1:4,2:1,3:3,4:2,5:1,6:2,7:4,8:3,9:3,10:4,11:3,12:1,13:1,14:2,15:3,16:4,17:3,18:1,19:2,20:2,21:4,22:2,23:3,24:4,25:1,26:1,27:2,28:1,29:3,30:4,31:2,32:2,33:3,34:4,35:2,36:4,37:1,38:1,39:3,40:2,41:1,42:4,43:3,44:4},
+      mondaiB:{1:4,2:3,3:4,4:3,5:4,6:2,7:1,8:1,9:3,10:1,11:3,12:4,13:1,14:4,15:2,16:2,17:3,18:2,19:1,20:4,21:2,22:mark([3,4]),23:mark([1,2]),24:mark([2,3]),25:mark([1,4]),26:mark([3,4]),27:mark([1,3]),28:mark([2,4]),29:mark([1,2])}
+    }
+  },
+  "R5":{
+    pdfUrls:{
+      mondaiA:"https://dobokujira.com/wp-content/uploads/2024/08/R5_1kan_01_mondaiA.pdf",
+      mondaiB:"https://dobokujira.com/wp-content/uploads/2024/08/R5_1kan_01_mondaiB.pdf",
+      kaitou: "https://dobokujira.com/wp-content/uploads/2024/08/R5_1kan_01_kaitou.pdf"
+    },
+    answers:{
+      mondaiA:{1:3,2:1,3:4,4:1,5:4,6:1,7:3,8:2,9:4,10:3,11:4,12:2,13:1,14:2,15:1,16:2,17:1,18:4,19:3,20:4,21:3,22:3,23:3,24:1,25:3,26:2,27:4,28:3,29:2,30:1,31:3,32:3,33:4,34:1,35:1,36:1,37:2,38:4,39:2,40:2,41:2,42:4,43:4,44:2},
+      mondaiB:{1:1,2:1,3:3,4:4,5:2,6:2,7:2,8:4,9:4,10:3,11:1,12:4,13:3,14:1,15:3,16:2,17:1,18:3,19:1,20:2,21:4,22:4,23:mark([1,4]),24:mark([1,2]),25:mark([2,3]),26:mark([1,3]),27:mark([2,3]),28:mark([3,4]),29:mark([2,4])}
+    }
+  },
+  "R4":{
+    pdfUrls:{
+      mondaiA:"https://dobokujira.com/wp-content/uploads/2024/08/R4_1kan_01_mondaiA.pdf",
+      mondaiB:"https://dobokujira.com/wp-content/uploads/2024/08/R4_1kan_01_mondaiB.pdf",
+      kaitou: "https://dobokujira.com/wp-content/uploads/2024/09/R4_1kan_01_kaitou.pdf"
+    },
+    answers:{
+      mondaiA:{1:1,2:4,3:2,4:1,5:3,6:2,7:1,8:4,9:2,10:4,11:3,12:1,13:2,14:2,15:2,16:4,17:1,18:2,19:3,20:4,21:2,22:2,23:3,24:3,25:4,26:3,27:1,28:2,29:3,30:4,31:2,32:4,33:3,34:1,35:4,36:1,37:1,38:4,39:3,40:4,41:3,42:1,43:1,44:3},
+      mondaiB:{1:2,2:3,3:1,4:4,5:2,6:1,7:3,8:3,9:4,10:1,11:2,12:1,13:2,14:4,15:4,16:3,17:4,18:1,19:2,20:4,21:2,22:3,23:mark([1,3]),24:mark([2,3]),25:mark([3,4]),26:mark([1,4]),27:mark([2,3]),28:mark([1,2]),29:mark([1,4])}
+    }
+  },
+  "R3":{
+    pdfUrls:{
+      mondaiA:"https://dobokujira.com/wp-content/uploads/2024/08/R3_1kan_01_mondaiA.pdf",
+      mondaiB:"https://dobokujira.com/wp-content/uploads/2024/08/R3_1kan_01_mondaiB.pdf",
+      kaitou: "https://dobokujira.com/wp-content/uploads/2024/09/R3_1kan_01_kaitou.pdf"
+    },
+    answers:{
+      mondaiA:{1:1,2:2,3:2,4:1,5:1,6:2,7:4,8:2,9:3,10:4,11:4,12:2,13:1,14:4,15:4,16:3,17:4,18:4,19:1,20:4,21:2,22:3,23:3,24:4,25:4,26:2,27:3,28:2,29:3,30:1,31:1,32:2,33:2,34:3,35:1,36:3,37:1,38:2,39:1,40:1,41:3,42:3,43:4,44:3},
+      mondaiB:{1:1,2:2,3:4,4:3,5:4,6:1,7:3,8:1,9:2,10:4,11:4,12:2,13:3,14:2,15:1,16:4,17:1,18:2,19:4,20:2,21:3,22:3,23:mark([1,3]),24:mark([3,4]),25:mark([2,4]),26:mark([1,2]),27:mark([1,4]),28:mark([1,3]),29:mark([2,3])}
+    }
+  }
+};
+
+/* ---- Category Map ---- */
+const Q_CAT = {
+  mondaiA:[
+    {from:1,to:3,name:'流体・熱力学',icon:'⚡',advice:'熱力学・流体の基礎公式を反復演習しましょう。'},
+    {from:4,to:6,name:'電気・建築一般',icon:'🏗',advice:'電気設備の基礎と建築構造の基本用語を整理しましょう。'},
+    {from:7,to:10,name:'空気調和設備',icon:'❄',advice:'空調の各方式と熱負荷計算の手順を理解しましょう。'},
+    {from:11,to:14,name:'給排水・衛生設備',icon:'🚿',advice:'給水方式・排水勾配・衛生設備の設計基準を確認しましょう。'},
+    {from:15,to:22,name:'設備設計・機器',icon:'📐',advice:'配管材料の特徴と設計基準値を表で覚えましょう。'},
+    {from:23,to:30,name:'管工事材料・施工',icon:'🔧',advice:'継手・バルブ・ポンプの用途と施工手順を整理しましょう。'},
+    {from:31,to:37,name:'施工法規（選択）',icon:'📋',advice:'建設業法・労安法の頻出条文を過去問ベースで暗記しましょう。'},
+    {from:38,to:44,name:'施工管理法',icon:'📊',advice:'工程管理と品質管理手法を反復しましょう。'}
+  ],
+  mondaiB:[
+    {from:1,to:9,name:'施工管理（必須B）',icon:'🏆',advice:'施工計画・安全管理・品質管理の必須問題は全問正解を目指しましょう。'},
+    {from:10,to:21,name:'施工・安全（選択B）',icon:'⛑',advice:'労働安全衛生法・施工管理の選択問題は正答率50%以上を目標に。'},
+    {from:22,to:29,name:'応用能力（足切り）',icon:'🎯',advice:'応用能力は足切り基準（50%）があります！2択マーク問題を集中特訓しましょう。'}
+  ]
+};
+
+/* ---- Storage ---- */
+const S={
+  K_THEME:'km_theme',K_PDF:'km_pdf_',K_HIST:'km_hist',K_QSTAT:'km_qstat',
+  K_GIST_PAT:'km_gist_pat',K_GIST_ID:'km_gist_id',K_GIST_LASTSYNC:'km_gist_lastsync',
+  theme(t){if(t)localStorage.setItem(this.K_THEME,t);else return localStorage.getItem(this.K_THEME)||'dark'},
+  pdfSet(y,sl,src){try{localStorage.setItem(this.K_PDF+y+'_'+sl,JSON.stringify(src))}catch(e){console.warn('pdfSet error',e)}},
+  pdfGet(y,sl){try{const v=localStorage.getItem(this.K_PDF+y+'_'+sl);return v?JSON.parse(v):null}catch(e){return null}},
+  pdfDel(y,sl){try{localStorage.removeItem(this.K_PDF+y+'_'+sl)}catch(e){}},
+  hist(){try{return JSON.parse(localStorage.getItem(this.K_HIST)||'[]')}catch{return[]}},
+  histSet(a){try{localStorage.setItem(this.K_HIST,JSON.stringify(a))}catch(e){console.warn('histSet error',e)}},
+  qstat(){try{return JSON.parse(localStorage.getItem(this.K_QSTAT)||'{}')}catch{return{}}},
+  qstatSet(o){try{localStorage.setItem(this.K_QSTAT,JSON.stringify(o))}catch(e){console.warn('qstatSet error',e)}},
+  gistPat(v){if(v!==undefined)localStorage.setItem(this.K_GIST_PAT,v);else return localStorage.getItem(this.K_GIST_PAT)||''},
+  gistId(v){if(v!==undefined)localStorage.setItem(this.K_GIST_ID,v);else return localStorage.getItem(this.K_GIST_ID)||''},
+  gistLastSync(v){if(v!==undefined)localStorage.setItem(this.K_GIST_LASTSYNC,v);else return localStorage.getItem(this.K_GIST_LASTSYNC)||''}
+};
+
+/* ---- IndexedDB ---- */
+const IDB=(function(){
+  var _db=null;
+  function open(){
+    if(_db)return Promise.resolve(_db);
+    return new Promise(function(res,rej){
+      try{
+        var r=indexedDB.open('km_pdfs',1);
+        r.onupgradeneeded=function(e){if(!e.target.result.objectStoreNames.contains('files'))e.target.result.createObjectStore('files')};
+        r.onsuccess=function(e){_db=e.target.result;res(_db)};
+        r.onerror=function(e){rej(e.target.error)};
+      }catch(e){rej(e)}
+    });
+  }
+  return{
+    put:function(k,v){return open().then(function(db){return new Promise(function(res,rej){var tx=db.transaction('files','readwrite');tx.objectStore('files').put(v,k);tx.oncomplete=res;tx.onerror=function(e){rej(e.target.error)}})})},
+    get:function(k){return open().then(function(db){return new Promise(function(res,rej){var tx=db.transaction('files','readonly');var r=tx.objectStore('files').get(k);r.onsuccess=function(){res(r.result)};r.onerror=function(e){rej(e.target.error)}})})},
+    del:function(k){return open().then(function(db){return new Promise(function(res,rej){var tx=db.transaction('files','readwrite');tx.objectStore('files').delete(k);tx.oncomplete=res;tx.onerror=function(e){rej(e.target.error)}})})}
+  };
+})();
+
+/* ---- State ---- */
+var ST={
+  year:null,mode:'practice',
+  ans:{mondaiA:{},mondaiB:{}},
+  pdfTab:'mondaiA',mobilePaper:'mondaiA',
+  timer:null,timerStart:null,timerLimit:null,
+  grading:null,histFilter:'current',detailTab:'all'
+};
+
+/* ---- Helpers ---- */
+function $(s){return document.querySelector(s)}
+function $$(s){return document.querySelectorAll(s)}
+function el(tag,props,ch){
+  props=props||{};ch=ch||[];
+  var e=document.createElement(tag);
+  Object.keys(props).forEach(function(k){
+    var v=props[k];
+    if(k==='class')e.className=v;
+    else if(k==='onclick')e.onclick=v;
+    else if(k.substring(0,5)==='data-'||k==='style'||k==='title')e.setAttribute(k,v);
+    else e[k]=v;
+  });
+  [].concat(ch).forEach(function(c){
+    if(c==null)return;
+    e.appendChild(typeof c==='string'||typeof c==='number'?document.createTextNode(String(c)):c);
+  });
+  return e;
+}
+var _toastTimer=null;
+function toast(msg,type){
+  try{
+    var t=$('#toast');if(!t)return;
+    t.textContent=msg;t.className='toast show'+(type?' '+type:'');
+    clearTimeout(_toastTimer);
+    _toastTimer=setTimeout(function(){t.classList.remove('show')},2400);
+  }catch(e){console.warn('toast error',e)}
+}
+function fmtTime(sec){
+  var m=Math.floor(sec/60),s=sec%60;
+  return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+}
+function getYear(id){for(var i=0;i<YEARS.length;i++)if(YEARS[i].id===id)return YEARS[i];return null}
+
+/* ---- Screen Navigation ---- */
+function goScreen(name){
+  try{
+    var screens=$$('.screen');
+    for(var i=0;i<screens.length;i++)screens[i].classList.remove('active');
+    var target=$('#screen-'+name);
+    if(!target){console.error('Screen not found: '+name);return}
+    target.classList.add('active');
+    // Bottom nav highlight
+    var bnavs=$$('.bnav-btn');
+    for(var j=0;j<bnavs.length;j++)bnavs[j].classList.remove('active');
+    var bnavMap={home:'bnavHome',exam:'bnavExam',result:'bnavResult',analytics:'bnavAnalytics',guide:'bnavGuide'};
+    var bnav=bnavMap[name]?$('#'+bnavMap[name]):null;
+    if(bnav)bnav.classList.add('active');
+    // Scroll to top
+    $('#mainArea').scrollTop=0;
+  }catch(e){
+    console.error('goScreen error:',e);
+    toast('画面遷移エラー','error');
+  }
+}
+function goHome(){goScreen('home');renderHome()}
+function bnavToExam(){if(ST.year){goScreen('exam')}else{toast('年度を選択してください')}}
+function bnavToResult(){goScreen('result')}
+
+/* ---- Home ---- */
+function renderHome(){
+  try{renderDashStats();renderYearGrid();renderHomeWeak()}catch(e){console.error('renderHome error',e)}
+}
+function renderDashStats(){
+  try{
+    var h=S.hist();
+    var scored=h.filter(function(e){return e.score!=null});
+    var passed=scored.filter(function(e){return e.passed});
+    $('#dsTotalAttempts').textContent=h.length;
+    if(scored.length){
+      var best=Math.max.apply(null,scored.map(function(e){return e.score}));
+      var avg=Math.round(scored.reduce(function(s,e){return s+e.score},0)/scored.length);
+      var passRate=Math.round(passed.length/scored.length*100);
+      $('#dsBestScore').textContent=best+'点';
+      $('#dsAvgScore').textContent=avg+'点';
+      $('#dsPassRate').textContent=passRate+'%';
+    }else{
+      $('#dsBestScore').textContent='—';
+      $('#dsAvgScore').textContent='—';
+      $('#dsPassRate').textContent='—';
+    }
+  }catch(e){console.warn('renderDashStats',e)}
+}
+function renderYearGrid(){
+  try{
+    var grid=$('#yearGrid');grid.innerHTML='';
+    var h=S.hist();
+    YEARS.forEach(function(y){
+      var preset=PRESET[y.id];
+      var pdfCnt=0;
+      PDF_SLOTS.forEach(function(sl){if(S.pdfGet(y.id,sl.key)||(preset&&preset.pdfUrls&&preset.pdfUrls[sl.key]))pdfCnt++});
+      var hasAns=preset&&preset.answers&&Object.keys(preset.answers.mondaiA||{}).length>0;
+      var yHist=h.filter(function(e){return e.year===y.id&&e.score!=null});
+      var best=yHist.length?Math.max.apply(null,yHist.map(function(e){return e.score})):null;
+      var bestPass=yHist.length?yHist.find(function(e){return e.score===best})||{}:{passed:null};
+      var card=el('div',{class:'year-card'+(preset?' has-data':''),onclick:function(){startExam(y.id)}},
+        el('div',{class:'year-card-year'},y.name),
+        el('div',{class:'year-card-sub'},y.sub),
+        el('div',{class:'year-card-badges'},
+          el('span',{class:'badge '+(pdfCnt===3?'badge-ok':'badge-miss')},'PDF '+pdfCnt+'/3'),
+          el('span',{class:'badge '+(hasAns?'badge-ok':'badge-miss')},hasAns?'正答✓':'正答未')
+        )
+      );
+      if(preset)card.appendChild(el('div',{class:'badge-ready'},'READY'));
+      if(best!=null){
+        card.appendChild(el('div',{class:'year-card-score'},
+          el('span',{class:'lbl'},'BEST'),
+          el('span',{class:'val'+(bestPass.passed?'':' fail')},best+'点')
+        ));
+      }
+      grid.appendChild(card);
+    });
+  }catch(e){console.error('renderYearGrid',e)}
+}
+function renderHomeWeak(){
+  try{
+    var allStats=S.qstat();
+    var entries=[];
+    Object.keys(allStats).forEach(function(year){
+      Object.keys(allStats[year]).forEach(function(k){
+        var v=allStats[year][k];
+        if(v.attempts<1)return;
+        var parts=k.split('_');
+        entries.push({year:year,paper:parts[0],qnum:parseInt(parts[1]),attempts:v.attempts,correct:v.correct,rate:v.correct/v.attempts});
+      });
+    });
+    var top5=entries.filter(function(e){return e.rate<1}).sort(function(a,b){return a.rate-b.rate||b.attempts-a.attempts}).slice(0,5);
+    var wrap=$('#homeWeak');
+    if(!top5.length){wrap.style.display='none';return}
+    wrap.style.display='block';
+    var list=$('#homeWeakList');list.innerHTML='';
+    top5.forEach(function(e,i){
+      var yr=getYear(e.year);
+      var pct=Math.round(e.rate*100);
+      list.appendChild(el('div',{class:'weak-row'},
+        el('div',{class:'weak-no'},String(i+1)),
+        el('div',{class:'weak-label'},(yr?yr.name:e.year)+' '+(e.paper==='mondaiA'?'問題A':'問題B')+' No.'+e.qnum),
+        el('div',{class:'weak-rate-bar'},el('div',{class:'weak-rate-fill',style:'width:'+pct+'%'})),
+        el('div',{class:'weak-pct'},pct+'%')
+      ));
+    });
+  }catch(e){console.warn('renderHomeWeak',e)}
+}
+
+/* ---- Start Exam ---- */
+function startExam(year){
+  try{
+    ST.year=year;ST.mode='practice';ST.ans={mondaiA:{},mondaiB:{}};ST.grading=null;
+    ST.pdfTab='mondaiA';ST.mobilePaper='mondaiA';
+    var y=getYear(year);
+    if(!y){toast('年度データが見つかりません: '+year,'error');return}
+    var label=$('#examYearLabel');if(label)label.textContent=y.name+' 1次試験';
+    var modeTabs=$$('.mode-tab');
+    modeTabs.forEach(function(t){t.classList.toggle('active',t.getAttribute('data-mode')==='practice')});
+    stopTimer();
+    var tm=$('#timer');if(tm)tm.style.display='none';
+    try{renderPdfTabs()}catch(e){console.warn('renderPdfTabs',e)}
+    try{renderAnsBody()}catch(e){console.warn('renderAnsBody',e)}
+    try{updateMobilePaperVis()}catch(e){}
+    try{updateProgress()}catch(e){}
+    goScreen('exam');
+    setTimeout(function(){loadPdf(ST.pdfTab).catch(function(e){console.warn('PDF load error:',e)})},100);
+  }catch(e){
+    console.error('startExam fatal:',e);
+    toast('試験開始エラー: '+e.message,'error');
+  }
+}
+
+/* ---- PDF ---- */
+function getEffPdf(slot){
+  try{
+    var user=S.pdfGet(ST.year,slot);
+    if(user)return user;
+    var p=PRESET[ST.year];
+    if(p&&p.pdfUrls&&p.pdfUrls[slot])return{type:'url',value:p.pdfUrls[slot],preset:true};
+    return null;
+  }catch(e){console.warn('getEffPdf',e);return null}
+}
+function renderPdfTabs(){
+  try{
+    var tabs=$('#pdfTabs');tabs.innerHTML='';
+    PDF_SLOTS.forEach(function(sl){
+      var src=getEffPdf(sl.key);
+      var tab=el('button',{class:'pdf-tab'+(ST.pdfTab===sl.key?' active':''),onclick:function(){ST.pdfTab=sl.key;renderPdfTabs();loadPdf(sl.key).catch(function(e){console.warn(e)})}},
+        sl.icon+' '+sl.label,
+        el('span',{class:'dot'+(src?' on':'')})
+      );
+      tabs.appendChild(tab);
+    });
+  }catch(e){console.warn('renderPdfTabs',e)}
+}
+
+/* PDF Loading: pdf.js for local files, CORS-proxy+pdf.js for URLs, iframe fallback */
+async function loadPdf(slot){
+  var wrap=$('#pdfFrameWrap');
+  if(!wrap)return;
+  // 旧コンテンツ削除 (pdfEmpty は保持)
+  wrap.querySelectorAll('iframe,embed,.pdf-img-wrap').forEach(function(n){n.remove()});
+  var empty=$('#pdfEmpty');
+  var src=getEffPdf(slot);
+  if(!src){
+    if(empty)empty.style.display='flex';
+    return;
+  }
+  if(empty)empty.style.display='none';
+
+  var url=src.value;
+  if(src.type==='file'){
+    var blob=await IDB.get(ST.year+'_'+slot);
+    if(!blob){
+      if(empty){empty.style.display='flex';var d=empty.querySelector('div:nth-child(2)');if(d)d.textContent='ファイルが見つかりません';}
+      return;
+    }
+    url=URL.createObjectURL(blob);
+    // ローカルファイル: blob URL なので pdf.js で直接全ページ描画可能
+    _renderPdfAllPages(wrap, url, true).catch(function(){});
+    return;
+  }
+
+  // URL指定: Google Docs Viewer で全ページ表示 (iOS Safari 対応、CORS 問題なし)
+  var loadingEl=document.createElement('div');
+  loadingEl.className='pdf-loading';
+  loadingEl.innerHTML='<div class="spinner"></div><div class="pdf-load-text">PDFを読み込んでいます...</div>';
+  wrap.appendChild(loadingEl);
+  var viewerUrl='https://docs.google.com/gview?url='+encodeURIComponent(url)+'&embedded=true';
+  var iframe=document.createElement('iframe');
+  iframe.src=viewerUrl;
+  iframe.style.cssText='width:100%;height:100%;border:none;';
+  iframe.onload=function(){if(loadingEl.parentNode)loadingEl.remove();};
+  setTimeout(function(){if(loadingEl.parentNode)loadingEl.remove();},15000);
+  wrap.appendChild(iframe);
+}
+
+// pdf.js で全ページ canvas 描画を試みる
+// isLocal=true: blob URL → 直接fetch可能
+// isLocal=false: 外部URL → プロキシ経由で試みる
+async function _renderPdfAllPages(wrap, url, isLocal){
+  // pdf.js が読み込まれるまで最大8秒待つ
+  var t=0;
+  while(!window.pdfjsLib&&t<8000){await new Promise(function(r){setTimeout(r,300)});t+=300;}
+  if(!window.pdfjsLib)return; // pdf.js なし → 諦める (iframe が見えてる)
+
+  pdfjsLib.GlobalWorkerOptions.workerSrc='';
+
+  var arrayBuf=null;
+  if(isLocal){
+    // blob URL はそのままfetch可
+    var r=await fetch(url);
+    arrayBuf=await r.arrayBuffer();
+  } else {
+    // 外部URL: allorigins.win プロキシ経由で試みる
+    // 失敗しても iframe が残っているので何もしない
+    var proxyUrl='https://api.allorigins.win/raw?url='+encodeURIComponent(url);
+    try{
+      var ctrl=typeof AbortController!=='undefined'?new AbortController():null;
+      var timer=ctrl?setTimeout(function(){ctrl.abort()},8000):null;
+      var resp=await fetch(proxyUrl,ctrl?{signal:ctrl.signal}:{});
+      if(timer)clearTimeout(timer);
+      if(!resp.ok)return;
+      arrayBuf=await resp.arrayBuffer();
+      // PDFマジックバイト確認
+      if(arrayBuf.byteLength<1024)return;
+      var h=new Uint8Array(arrayBuf,0,4);
+      if(String.fromCharCode(h[0],h[1],h[2],h[3])!=='%PDF')return;
+    }catch(e){
+      return; // プロキシ失敗 → iframe のまま
+    }
+  }
+
+  if(!arrayBuf)return;
+
+  var pdf=await pdfjsLib.getDocument({data:arrayBuf}).promise;
+  var numPages=pdf.numPages;
+
+  // 全ページ描画成功 → iframe を差し替え
+  wrap.querySelectorAll('iframe,embed').forEach(function(n){n.remove()});
+  var imgWrap=document.createElement('div');
+  imgWrap.className='pdf-img-wrap';
+  wrap.appendChild(imgWrap);
+
+  var scale=Math.min(2.5,Math.max(1.2,(wrap.clientWidth||600)/800*1.5));
+  var dpr=Math.min(window.devicePixelRatio||1,2);
+
+  for(var p=1;p<=numPages;p++){
+    var page=await pdf.getPage(p);
+    var vp=page.getViewport({scale:scale*dpr});
+    var cv=document.createElement('canvas');
+    var ctx=cv.getContext('2d');
+    cv.width=vp.width;cv.height=vp.height;
+    document.body.appendChild(cv);
+    await page.render({canvasContext:ctx,viewport:vp}).promise;
+    var img=document.createElement('img');
+    img.className='pdf-page-img';
+    img.src=cv.toDataURL('image/jpeg',0.88);
+    img.alt='p'+p;
+    imgWrap.appendChild(img);
+    cv.remove();cv.width=0;cv.height=0;
+    if(p%3===0)await new Promise(function(r){setTimeout(r,0);});
+  }
+}
+
+// Render PDF with pdf.js — all pages as images (works on all devices incl. iOS Safari)
+function openPdfNewTab(){
+  try{
+    var src=getEffPdf(ST.pdfTab);
+    if(!src){toast('PDFが設定されていません');return}
+    if(src.type==='url')window.open(src.value,'_blank');
+    else IDB.get(ST.year+'_'+ST.pdfTab).then(function(b){if(b)window.open(URL.createObjectURL(b),'_blank')});
+  }catch(e){console.warn('openPdfNewTab',e)}
+}
+
+/* ---- Answer Body ---- */
+function renderAnsBody(){
+  try{
+    var body=$('#ansBody');body.innerHTML='';
+    var rules=getRules(ST.year);
+    var qstats=S.qstat()[ST.year]||{};
+    ['mondaiA','mondaiB'].forEach(function(pk){
+      var groups=rules[pk];
+      if(!groups)return;
+      var block=el('div',{class:'paper-block'+(ST.mobilePaper!==pk?' hidden-mobile':''),'data-paper-block':pk});
+      block.appendChild(el('div',{class:'qg-title'},el('span',{},pk==='mondaiA'?'◤ 問題A ◢':'◤ 問題B ◢')));
+      groups.forEach(function(g,gi){
+        var gh=el('div',{class:'qg-title','data-gkey':pk+'_'+gi},el('span',{},g.label));
+        if(g.type==='required')gh.appendChild(el('span',{class:'tag-req'},'必須'));
+        else if(g.type==='choice'){gh.appendChild(el('span',{class:'tag-sel'},g.pick+'問選択'));gh.appendChild(el('span',{class:'pick-cnt','data-pikcnt':pk+'_'+gi},'0/'+g.pick))}
+        else if(g.type==='multi')gh.appendChild(el('span',{class:'tag-multi'},'各'+g.pickPerQ+'択'));
+        block.appendChild(gh);
+        for(var q=g.from;q<=g.to;q++)block.appendChild(renderQRow(pk,q,rules.choices,g,qstats));
+      });
+      body.appendChild(block);
+    });
+    updatePickCounts();updateProgress();
+  }catch(e){console.error('renderAnsBody',e)}
+}
+function renderQRow(pk,qnum,choices,group,qstats){
+  var isM=group.type==='multi';
+  var row=el('div',{class:'q-row'+(isM?' multi-row':''),'data-paper':pk,'data-q':String(qnum)},
+    el('div',{class:'q-num'},'No.'+qnum),
+    el('div',{class:'q-mark','data-mark':pk+'_'+qnum},'')
+  );
+  var qc=el('div',{class:'q-choices'});
+  for(var c=1;c<=choices;c++){
+    qc.appendChild(el('button',{class:'q-choice','data-choice':String(c),onclick:function(){selectChoice(pk,qnum,parseInt(this.getAttribute('data-choice')),row,group)}},String(c)));
+  }
+  row.appendChild(qc);
+  var k=pk+'_'+qnum;var st=qstats[k];
+  if(st&&st.attempts>0){
+    var r=Math.round(st.correct/st.attempts*100);
+    row.appendChild(el('div',{class:'q-stat '+(r>=70?'good':r<40?'bad':''),title:st.attempts+'回中'+st.correct+'回正解'},r+'%'));
+  }else row.appendChild(el('div',{class:'q-stat'},''));
+  return row;
+}
+function selectChoice(pk,qnum,choice,row,group){
+  try{
+    if(ST.grading){clearGrading();ST.grading=null}
+    var isM=group&&group.type==='multi';
+    if(isM){
+      var arr=ST.ans[pk][qnum];
+      if(!Array.isArray(arr))arr=[];
+      var idx=arr.indexOf(choice);
+      if(idx>=0)arr.splice(idx,1);
+      else{
+        if(arr.length>=group.pickPerQ){toast('最大'+group.pickPerQ+'つまで選択できます');return}
+        arr.push(choice);
+      }
+      if(arr.length===0){delete ST.ans[pk][qnum];row.classList.remove('answered')}
+      else{ST.ans[pk][qnum]=arr;row.classList.add('answered')}
+      row.querySelectorAll('.q-choice').forEach(function(b){var c=parseInt(b.getAttribute('data-choice'));b.classList.toggle('sel',arr.indexOf(c)>=0)});
+    }else{
+      var cur=ST.ans[pk][qnum];
+      if(cur===choice){delete ST.ans[pk][qnum];row.classList.remove('answered');row.querySelectorAll('.q-choice').forEach(function(b){b.classList.remove('sel')})}
+      else{ST.ans[pk][qnum]=choice;row.classList.add('answered');row.querySelectorAll('.q-choice').forEach(function(b){b.classList.toggle('sel',b.getAttribute('data-choice')===String(choice))})}
+    }
+    updatePickCounts();updateProgress();
+  }catch(e){console.warn('selectChoice',e)}
+}
+function updatePickCounts(){
+  try{
+    var rules=getRules(ST.year);
+    ['mondaiA','mondaiB'].forEach(function(pk){
+      (rules[pk]||[]).forEach(function(g,gi){
+        if(g.type!=='choice')return;
+        var cnt=0;for(var q=g.from;q<=g.to;q++)if(ST.ans[pk][q]!=null)cnt++;
+        var t=document.querySelector('[data-pikcnt="'+pk+'_'+gi+'"]');
+        if(t){t.textContent=cnt+'/'+g.pick;t.classList.remove('over','ok');if(cnt>g.pick)t.classList.add('over');else if(cnt===g.pick)t.classList.add('ok')}
+      });
+    });
+  }catch(e){console.warn('updatePickCounts',e)}
+}
+function countNeeded(){
+  var rules=getRules(ST.year);var n=0;
+  ['mondaiA','mondaiB'].forEach(function(p){(rules[p]||[]).forEach(function(g){
+    if(g.type==='required'||g.type==='multi')n+=(g.to-g.from+1);
+    else if(g.type==='choice')n+=g.pick;
+  })});
+  return n;
+}
+function countAnswered(){var n=0;['mondaiA','mondaiB'].forEach(function(p){Object.keys(ST.ans[p]||{}).forEach(function(){n++})});return n}
+function countAnsByPaper(p){return Object.keys(ST.ans[p]||{}).length}
+function updateProgress(){
+  try{
+    $('#progressAnswered').textContent=countAnswered();
+    $('#progressNeeded').textContent=countNeeded();
+    $('#mbA').textContent=countAnsByPaper('mondaiA');
+    $('#mbB').textContent=countAnsByPaper('mondaiB');
+  }catch(e){}
+}
+function clearGrading(){
+  $$('.q-row').forEach(function(r){
+    r.classList.remove('correct','wrong','invalid');
+    r.querySelectorAll('.q-choice').forEach(function(b){b.classList.remove('sel','correct-ans','wrong-ans','show-ok')});
+    var m=r.querySelector('.q-mark');if(m)m.textContent='';
+  });
+}
+function resetAnswers(){
+  if(!confirm('入力した回答をすべてクリアしますか？'))return;
+  ST.ans={mondaiA:{},mondaiB:{}};ST.grading=null;
+  $$('.q-row').forEach(function(r){
+    r.classList.remove('answered','correct','wrong','invalid');
+    r.querySelectorAll('.q-choice').forEach(function(b){b.classList.remove('sel','correct-ans','wrong-ans','show-ok')});
+    var m=r.querySelector('.q-mark');if(m)m.textContent='';
+  });
+  updatePickCounts();updateProgress();toast('クリアしました');
+}
+function jumpUnanswered(){
+  try{
+    var rules=getRules(ST.year);
+    var papers=['mondaiA','mondaiB'];
+    for(var pi=0;pi<papers.length;pi++){
+      var p=papers[pi];
+      var groups=rules[p]||[];
+      for(var gi=0;gi<groups.length;gi++){
+        var g=groups[gi];
+        for(var q=g.from;q<=g.to;q++){
+          if(ST.ans[p][q]==null){
+            if(ST.mobilePaper!==p){
+              ST.mobilePaper=p;
+              $$('.paper-tab-mob').forEach(function(t){t.classList.toggle('active',t.getAttribute('data-paper')===p)});
+              updateMobilePaperVis();
+            }
+            var row=document.querySelector('.q-row[data-paper="'+p+'"][data-q="'+q+'"]');
+            if(row){row.scrollIntoView({behavior:'smooth',block:'center'});row.classList.remove('hl');void row.offsetWidth;row.classList.add('hl')}
+            return;
+          }
+        }
+      }
+    }
+    toast('全問回答済みです','success');
+  }catch(e){console.warn('jumpUnanswered',e)}
+}
+function updateMobilePaperVis(){
+  $$('.paper-block').forEach(function(b){
+    b.classList.toggle('hidden-mobile',b.getAttribute('data-paper-block')!==ST.mobilePaper);
+  });
+}
+function jumpToQ(pk,qnum){
+  try{
+    if(ST.mobilePaper!==pk){
+      ST.mobilePaper=pk;
+      $$('.paper-tab-mob').forEach(function(t){t.classList.toggle('active',t.getAttribute('data-paper')===pk)});
+      updateMobilePaperVis();
+    }
+    goScreen('exam');
+    setTimeout(function(){
+      var row=document.querySelector('.q-row[data-paper="'+pk+'"][data-q="'+String(qnum)+'"]');
+      if(row){row.scrollIntoView({behavior:'smooth',block:'center'});row.classList.remove('hl');void row.offsetWidth;row.classList.add('hl')}
+    },100);
+  }catch(e){console.warn('jumpToQ',e)}
+}
+
+/* ---- Grading ---- */
+function gradeAnswers(){
+  try{
+    var preset=PRESET[ST.year];
+    var rules=getRules(ST.year);
+    var correctAns=(preset&&preset.answers)?preset.answers:{mondaiA:{},mondaiB:{}};
+    var hasData=!!preset&&!!preset.answers&&Object.keys(correctAns.mondaiA||{}).length>0;
+    var perQ={mondaiA:{},mondaiB:{}};
+    var correct=0,totalGraded=0;
+    var catStats={applied:{correct:0,total:0}};
+    ['mondaiA','mondaiB'].forEach(function(pk){
+      (rules[pk]||[]).forEach(function(g){
+        var uAns=ST.ans[pk]||{};var cAns=correctAns[pk]||{};
+        var inflate=function(q,st){
+          perQ[pk][q]=st;
+          if(st==='correct')correct++;
+          if(g.category&&catStats[g.category]&&st==='correct')catStats[g.category].correct++;
+        };
+        if(g.type==='required'||g.type==='multi'){
+          for(var q=g.from;q<=g.to;q++){
+            totalGraded++;
+            if(g.category&&catStats[g.category])catStats[g.category].total++;
+            var u=uAns[q],c=cAns[q];
+            if(u==null||(Array.isArray(u)&&u.length===0))inflate(q,'unanswered');
+            else if(c==null)inflate(q,'no-key');
+            else{var ok=g.type==='multi'?matchMulti(u,c):matchSingle(u,c);inflate(q,ok?'correct':'wrong')}
+          }
+        }else if(g.type==='choice'){
+          totalGraded+=g.pick;
+          var answered=[];
+          for(var q2=g.from;q2<=g.to;q2++)if(uAns[q2]!=null)answered.push(q2);
+          var cList=[],wList=[];
+          answered.forEach(function(q){var c=cAns[q];(c!=null&&matchSingle(uAns[q],c))?cList.push(q):wList.push(q)});
+          var adopted={};
+          cList.slice(0,g.pick).forEach(function(q){adopted[q]=true});
+          wList.slice(0,Math.max(0,g.pick-Object.keys(adopted).length)).forEach(function(q){adopted[q]=true});
+          for(var q3=g.from;q3<=g.to;q3++){
+            var u3=uAns[q3],c3=cAns[q3];
+            if(u3==null)perQ[pk][q3]='unanswered';
+            else if(!adopted[q3])perQ[pk][q3]='invalid';
+            else if(c3==null)perQ[pk][q3]='no-key';
+            else if(matchSingle(u3,c3)){perQ[pk][q3]='correct';correct++}
+            else perQ[pk][q3]='wrong';
+          }
+        }
+      });
+    });
+    return{perQuestion:perQ,correct:correct,total:totalGraded,catStats:catStats,hasAnswerData:hasData};
+  }catch(e){
+    console.error('gradeAnswers error',e);
+    return{perQuestion:{},correct:0,total:0,catStats:{applied:{correct:0,total:0}},hasAnswerData:false};
+  }
+}
+function submitAnswers(){
+  try{
+    if(countAnswered()===0){toast('回答が入力されていません');return}
+    var g=gradeAnswers();
+    ST.grading=g;
+    if(g.hasAnswerData)updateQStats(g);
+    showResult(g);
+  }catch(e){console.error('submitAnswers',e);toast('採点エラー','error')}
+}
+function updateQStats(g){
+  try{
+    var all=S.qstat();
+    if(!all[ST.year])all[ST.year]={};
+    ['mondaiA','mondaiB'].forEach(function(pk){
+      var perQ=g.perQuestion[pk]||{};
+      Object.keys(perQ).forEach(function(qStr){
+        var q=parseInt(qStr);
+        var st=perQ[q];
+        if(st==='correct'||st==='wrong'){
+          var k=pk+'_'+q;
+          if(!all[ST.year][k])all[ST.year][k]={attempts:0,correct:0};
+          all[ST.year][k].attempts++;
+          if(st==='correct')all[ST.year][k].correct++;
+        }
+      });
+    });
+    S.qstatSet(all);
+  }catch(e){console.warn('updateQStats',e)}
+}
+function showResult(g){
+  try{
+    var rules=getRules(ST.year);
+    var noAns=!g.hasAnswerData;
+    var score=(!noAns&&g.total>0)?Math.round(g.correct/g.total*100):0;
+    $('#resultScore').textContent=noAns?'—':score;
+    $('#resultLabel').textContent=noAns
+      ?'回答数: '+countAnswered()+'問（正答データ未登録）'
+      :score+'% ('+g.correct+'/'+g.total+'問)';
+    var applied=g.catStats&&g.catStats.applied;
+    var appliedRate=(applied&&applied.total>0)?Math.round(applied.correct/applied.total*100):null;
+    var overallPass=false,appliedPass=true;
+    if(!noAns){
+      overallPass=score>=(rules.passScoreOverall||60);
+      if(applied&&applied.total>0&&rules.passScoreApplied!=null)appliedPass=appliedRate>=rules.passScoreApplied;
+    }
+    var finalPass=overallPass&&appliedPass;
+    var elV=$('#resultVerdict');
+    if(noAns){elV.textContent='NO ANSWER DATA';elV.className='result-verdict fail'}
+    else{elV.textContent=finalPass?'✓ PASS LEVEL':'✗ BELOW PASS LINE';elV.className='result-verdict '+(finalPass?'pass':'fail')}
+
+    renderPassBars(g,rules,score,appliedRate);
+
+    var elapsed=ST.timerStart?Math.floor((Date.now()-ST.timerStart)/1000):null;
+    var sg=$('#resultStats');sg.innerHTML='';
+    [{label:'MON-A',value:countAnsByPaper('mondaiA')},
+     {label:'MON-B',value:countAnsByPaper('mondaiB')},
+     {label:'TIME',value:elapsed!=null?fmtTime(elapsed):'—'},
+     {label:'MODE',value:ST.mode==='practice'?'練習':ST.mode==='exam'?'模試':'復習'}
+    ].forEach(function(s){
+      sg.appendChild(el('div',{class:'stat-card'},el('div',{class:'stat-val'},String(s.value)),el('div',{class:'stat-lbl'},s.label)));
+    });
+
+    if(!noAns){
+      saveHist({year:ST.year,score:score,correct:g.correct,total:g.total,
+        appliedCorrect:applied?applied.correct:null,appliedTotal:applied?applied.total:null,
+        ts:Date.now(),mode:ST.mode,elapsed:elapsed,passed:finalPass});
+    }
+    stopTimer();
+    renderDetailContent();
+    drawScoreChart();
+    renderWeakList();
+    renderHistList();
+    goScreen('result');
+  }catch(e){console.error('showResult',e);toast('結果表示エラー','error')}
+}
+function renderPassBars(g,rules,score,appliedRate){
+  try{
+    var wrap=$('#passBars');wrap.innerHTML='';
+    if(!g.hasAnswerData){wrap.innerHTML='<div style="color:var(--text-sub);font-size:12px;font-family:var(--font-mono)">正答データが未登録のため判定できません</div>';return}
+    var t1=rules.passScoreOverall||60;var ok1=score>=t1;
+    var b1=el('div',{class:'bar-block'});
+    b1.appendChild(el('div',{class:'bar-label'},el('span',{},'① 総合得点（基準: '+t1+'%以上）'),el('span',{class:'ratio '+(ok1?'ok':'ng')},score+'% ('+g.correct+'/'+g.total+')')));
+    var tr1=el('div',{class:'bar-track'});
+    tr1.appendChild(el('div',{class:'bar-fill '+(ok1?'ok':'ng'),style:'width:'+Math.min(100,score)+'%'}));
+    tr1.appendChild(el('div',{class:'bar-threshold',style:'left:'+t1+'%'}));
+    b1.appendChild(tr1);
+    b1.appendChild(el('div',{class:'bar-foot'},ok1?'✅ 基準クリア':'❌ あと '+Math.max(0,Math.ceil(g.total*t1/100)-g.correct)+' 問の正解が必要'));
+    wrap.appendChild(b1);
+    var ap=g.catStats&&g.catStats.applied;
+    if(ap&&ap.total>0&&rules.passScoreApplied!=null){
+      var t2=rules.passScoreApplied;var ok2=appliedRate>=t2;
+      var b2=el('div',{class:'bar-block'});
+      b2.appendChild(el('div',{class:'bar-label'},el('span',{},'② 応用能力（基準: '+t2+'%以上・足切り）'),el('span',{class:'ratio '+(ok2?'ok':'ng')},appliedRate+'% ('+ap.correct+'/'+ap.total+')')));
+      var tr2=el('div',{class:'bar-track'});
+      tr2.appendChild(el('div',{class:'bar-fill '+(ok2?'ok':'ng'),style:'width:'+Math.min(100,appliedRate)+'%'}));
+      tr2.appendChild(el('div',{class:'bar-threshold',style:'left:'+t2+'%'}));
+      b2.appendChild(tr2);
+      b2.appendChild(el('div',{class:'bar-foot'},ok2?'✅ 足切りクリア':'❌ あと '+Math.max(0,Math.ceil(ap.total*t2/100)-ap.correct)+' 問必要'));
+      wrap.appendChild(b2);
+    }
+  }catch(e){console.warn('renderPassBars',e)}
+}
+function renderDetailContent(){
+  try{
+    var wrap=$('#detailContent');wrap.innerHTML='';
+    var g=ST.grading;
+    if(!g){wrap.innerHTML='<div style="text-align:center;padding:20px;color:var(--text-sub);font-size:12px">採点結果がありません</div>';return}
+    var preset=PRESET[ST.year];
+    var cAns=(preset&&preset.answers)?preset.answers:{mondaiA:{},mondaiB:{}};
+    var rules=getRules(ST.year);
+    var filter=ST.detailTab;
+    ['mondaiA','mondaiB'].forEach(function(pk){
+      var perQ=g.perQuestion[pk]||{};
+      var groups=rules[pk]||[];
+      if(!groups.length)return;
+      wrap.appendChild(el('div',{class:'qg-title',style:'margin-top:14px'},el('span',{},pk==='mondaiA'?'◤ 問題A ◢':'◤ 問題B ◢')));
+      var grid=el('div',{class:'detail-grid'});
+      groups.forEach(function(grp){
+        for(var q=grp.from;q<=grp.to;q++){
+          var st=perQ[q]||'unanswered';
+          if(filter==='wrong'&&!(st==='wrong'||st==='invalid'))continue;
+          if(filter==='unanswered'&&st!=='unanswered')continue;
+          var u=ST.ans[pk][q];
+          var c=(cAns[pk]||{})[q];
+          var uStr=u==null?'—':(Array.isArray(u)?u.join('・'):u);
+          var cStr=formatAns(c);
+          var mk='—',cls='d-cell unanswered';
+          if(st==='correct'){mk='○';cls='d-cell correct'}
+          else if(st==='wrong'){mk='✕';cls='d-cell wrong'}
+          else if(st==='invalid'){mk='△';cls='d-cell invalid'}
+          grid.appendChild(el('div',{class:cls,title:'No.'+q+' 選択:'+uStr+' 正解:'+cStr,onclick:function(){jumpToQ(pk,q)}},
+            el('div',{class:'qn'},q),el('div',{class:'mk'},mk),el('div',{class:'as'},st==='unanswered'?'未回答':uStr+'→'+cStr)
+          ));
+        }
+      });
+      if(grid.children.length===0)wrap.appendChild(el('div',{style:'padding:10px;color:var(--text-sub);font-size:12px'},'該当なし'));
+      else wrap.appendChild(grid);
+    });
+  }catch(e){console.warn('renderDetailContent',e)}
+}
+function restoreSel(){
+  $$('.q-row').forEach(function(row){
+    var pk=row.getAttribute('data-paper');var qnum=parseInt(row.getAttribute('data-q'));
+    var u=ST.ans[pk][qnum];
+    row.querySelectorAll('.q-choice').forEach(function(b){
+      var c=parseInt(b.getAttribute('data-choice'));
+      b.classList.remove('sel','correct-ans','wrong-ans','show-ok');
+      if(Array.isArray(u)){if(u.indexOf(c)>=0)b.classList.add('sel')}
+      else if(u===c)b.classList.add('sel');
+    });
+    if(u!=null&&!(Array.isArray(u)&&u.length===0))row.classList.add('answered');
+  });
+}
+function applyGrading(g){
+  try{
+    var preset=PRESET[ST.year];
+    var cAns=(preset&&preset.answers)?preset.answers:{mondaiA:{},mondaiB:{}};
+    var rules=getRules(ST.year);
+    $$('.q-row').forEach(function(row){
+      var pk=row.getAttribute('data-paper');var qnum=parseInt(row.getAttribute('data-q'));
+      var status=g.perQuestion[pk]&&g.perQuestion[pk][qnum];
+      row.classList.remove('correct','wrong','invalid');
+      var mark=row.querySelector('.q-mark');if(mark)mark.textContent='';
+      row.querySelectorAll('.q-choice').forEach(function(b){b.classList.remove('correct-ans','wrong-ans','show-ok')});
+      var grp=findGroup(rules[pk]||[],qnum);
+      var u=ST.ans[pk][qnum];var c=(cAns[pk]||{})[qnum];
+      if(status==='correct'){
+        row.classList.add('correct');if(mark)mark.textContent='○';
+        row.querySelectorAll('.q-choice').forEach(function(b){var cn=parseInt(b.getAttribute('data-choice'));if(Array.isArray(u)?u.indexOf(cn)>=0:u===cn)b.classList.add('correct-ans')});
+      }else if(status==='wrong'){
+        row.classList.add('wrong');if(mark)mark.textContent='✕';
+        var cs=[];
+        if(grp&&grp.type==='multi'&&isMultiKey(c))cs=c.pick;else if(isArrayKey(c))cs=c;else if(typeof c==='number')cs=[c];
+        row.querySelectorAll('.q-choice').forEach(function(b){
+          var cn=parseInt(b.getAttribute('data-choice'));
+          if(Array.isArray(u)?u.indexOf(cn)>=0:u===cn)b.classList.add('wrong-ans');
+          if(cs.indexOf(cn)>=0)b.classList.add('correct-ans');
+        });
+      }else if(status==='invalid'){row.classList.add('invalid');if(mark)mark.textContent='△'}
+    });
+  }catch(e){console.warn('applyGrading',e)}
+}
+function reviewResult(){
+  try{
+    if(!ST.grading){toast('採点結果がありません');return}
+    goScreen('exam');
+    setTimeout(function(){
+      ST.mode='review';
+      $$('.mode-tab').forEach(function(t){t.classList.toggle('active',t.getAttribute('data-mode')==='review')});
+      restoreSel();applyGrading(ST.grading);
+      toast('復習モード: 正解/不正解を表示','success');
+    },80);
+  }catch(e){console.warn('reviewResult',e)}
+}
+
+/* ---- Timer ---- */
+function startTimer(min){
+  try{
+    ST.timerStart=Date.now();ST.timerLimit=min*60;
+    var t=$('#timer');t.style.display='block';
+    var tick=function(){
+      var elapsed=Math.floor((Date.now()-ST.timerStart)/1000);
+      var remain=ST.timerLimit-elapsed;
+      if(remain<=0){t.textContent='TIME UP';t.className='timer danger';stopTimer();submitAnswers();return}
+      t.textContent=fmtTime(remain);
+      t.className='timer '+(remain<600?'danger':remain<1800?'warn':'run');
+    };
+    tick();ST.timer=setInterval(tick,1000);
+  }catch(e){console.warn('startTimer',e)}
+}
+function stopTimer(){if(ST.timer){clearInterval(ST.timer);ST.timer=null}}
+
+/* ---- History ---- */
+function saveHist(entry){
+  try{
+    var a=S.hist();a.push(entry);
+    if(a.length>200)a.splice(0,a.length-200);
+    S.histSet(a);
+  }catch(e){console.warn('saveHist',e)}
+}
+function getFilteredHist(){
+  var all=S.hist();
+  if(ST.histFilter==='all')return all;
+  return all.filter(function(e){return e.year===ST.year});
+}
+function filterHistToggle(){
+  ST.histFilter=ST.histFilter==='current'?'all':'current';
+  drawScoreChart();renderHistList();
+  toast(ST.histFilter==='all'?'全年度表示':'今年度のみ');
+}
+function renderHistList(){
+  try{
+    var wrap=$('#histList');if(!wrap)return;
+    var list=getFilteredHist().slice().reverse().slice(0,20);
+    if(!list.length){wrap.innerHTML='<div style="text-align:center;padding:20px;color:var(--text-sub);font-size:12px">履歴がありません</div>';return}
+    var tw=el('div',{class:'hist-wrap'});
+    var tb=el('table',{class:'hist-table'});
+    tb.appendChild(el('thead',{},el('tr',{},
+      el('th',{},'DATE'),el('th',{},'YEAR'),el('th',{},'MODE'),el('th',{},'SCORE'),el('th',{},'応用'),el('th',{},'結果'),el('th',{},'TIME')
+    )));
+    var tbody=el('tbody',{});
+    list.forEach(function(e){
+      var d=new Date(e.ts);
+      var ds=(d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+      var y=getYear(e.year);
+      var ml=e.mode==='practice'?'練習':e.mode==='exam'?'模試':'復習';
+      var ap=(e.appliedTotal&&e.appliedTotal>0)?Math.round(e.appliedCorrect/e.appliedTotal*100)+'%':'—';
+      tbody.appendChild(el('tr',{},
+        el('td',{},ds),
+        el('td',{},y?y.name:e.year),
+        el('td',{},ml),
+        el('td',{class:'sc '+(e.score>=60?'pass':'fail')},e.score+'点 ('+e.correct+'/'+e.total+')'),
+        el('td',{},ap),
+        el('td',{},e.passed?'PASS':'FAIL'),
+        el('td',{},e.elapsed!=null?fmtTime(e.elapsed):'—')
+      ));
+    });
+    tb.appendChild(tbody);tw.appendChild(tb);wrap.innerHTML='';wrap.appendChild(tw);
+  }catch(e){console.warn('renderHistList',e)}
+}
+function clearAllHistConfirm(){
+  if(!confirm('全データ（履歴・統計）を削除しますか？'))return;
+  S.histSet([]);S.qstatSet({});
+  renderHome();renderHistList();drawScoreChart();
+  toast('全データを削除しました','success');
+}
+function clearAllHist(){clearAllHistConfirm()}
+
+/* ---- Weak List ---- */
+function renderWeakList(){
+  try{
+    var wrap=$('#weakList');wrap.innerHTML='';
+    var stats=S.qstat()[ST.year]||{};
+    var entries=Object.keys(stats).filter(function(k){return stats[k].attempts>=1})
+      .map(function(k){var parts=k.split('_');return{key:k,paper:parts[0],qnum:parseInt(parts[1]),attempts:stats[k].attempts,correct:stats[k].correct,rate:stats[k].correct/stats[k].attempts}})
+      .filter(function(e){return e.rate<1})
+      .sort(function(a,b){return a.rate-b.rate||b.attempts-a.attempts})
+      .slice(0,10);
+    if(!entries.length){wrap.innerHTML='<div style="text-align:center;padding:20px;color:var(--text-sub);font-size:12px">十分なデータがありません</div>';return}
+    var list=el('div',{class:'weak-list-full'});
+    entries.forEach(function(e,i){
+      var pct=Math.round(e.rate*100);
+      list.appendChild(el('div',{class:'weak-item',onclick:function(){jumpToQ(e.paper,e.qnum)}},
+        el('div',{class:'weak-rnk '+(i<3?'top':'')},String(i+1)),
+        el('div',{class:'weak-info'},
+          el('div',{class:'weak-title'},(e.paper==='mondaiA'?'問題A':'問題B')+' No.'+e.qnum),
+          el('div',{class:'weak-sub'},e.attempts+'回 · '+e.correct+'正解 · '+(e.attempts-e.correct)+'誤答')
+        ),
+        el('div',{class:'weak-pct2'},pct+'%')
+      ));
+    });
+    wrap.appendChild(list);
+  }catch(e){console.warn('renderWeakList',e)}
+}
+
+/* ---- Score Chart ---- */
+function drawScoreChart(){
+  try{
+    var canvas=$('#scoreChart');if(!canvas)return;
+    var data=getFilteredHist().filter(function(e){return e.score!=null}).slice(-30);
+    var ctx=canvas.getContext('2d');
+    var dpr=window.devicePixelRatio||1;
+    var cssW=canvas.clientWidth||600;var cssH=200;
+    canvas.width=cssW*dpr;canvas.height=cssH*dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,cssW,cssH);
+    var cs=getComputedStyle(document.documentElement);
+    var cBorder=cs.getPropertyValue('--border').trim()||'rgba(0,245,255,.2)';
+    var cCyan=cs.getPropertyValue('--neon-cyan').trim()||'#00f5ff';
+    var cGreen=cs.getPropertyValue('--neon-green').trim()||'#39ff88';
+    var cRed=cs.getPropertyValue('--neon-red').trim()||'#ff4d6d';
+    var cText=cs.getPropertyValue('--text-sub').trim()||'#8b95c9';
+    var pad={top:22,right:14,bottom:28,left:36};
+    var w=cssW-pad.left-pad.right;var h=cssH-pad.top-pad.bottom;
+    ctx.font='10px monospace';
+    // Grid
+    [0,25,50,75,100].forEach(function(v){
+      var y=pad.top+h*(1-v/100);
+      ctx.beginPath();ctx.moveTo(pad.left,y);ctx.lineTo(pad.left+w,y);
+      ctx.strokeStyle=v===60?cGreen:cBorder;ctx.lineWidth=v===60?1.5:0.5;ctx.stroke();
+      ctx.fillStyle=cText;ctx.fillText(v+'',4,y+3);
+    });
+    if(data.length===0){
+      ctx.fillStyle=cText;ctx.textAlign='center';ctx.fillText('データがありません',cssW/2,cssH/2);ctx.textAlign='left';return;
+    }
+    if(data.length===1){
+      var x0=pad.left+w/2;var y0=pad.top+h*(1-data[0].score/100);
+      ctx.beginPath();ctx.arc(x0,y0,4,0,Math.PI*2);ctx.fillStyle=cCyan;ctx.fill();
+      ctx.fillStyle=cText;ctx.textAlign='center';ctx.fillText(data[0].score+'点',x0,y0-8);ctx.textAlign='left';return;
+    }
+    // Line
+    ctx.beginPath();
+    data.forEach(function(e,i){
+      var x=pad.left+w*(data.length===1?0.5:i/(data.length-1));
+      var y=pad.top+h*(1-e.score/100);
+      if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+    });
+    ctx.strokeStyle=cCyan;ctx.lineWidth=2;ctx.stroke();
+    // Points
+    data.forEach(function(e,i){
+      var x=pad.left+w*(data.length===1?0.5:i/(data.length-1));
+      var y=pad.top+h*(1-e.score/100);
+      ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);
+      ctx.fillStyle=e.score>=60?cGreen:cRed;ctx.fill();
+    });
+  }catch(e){console.warn('drawScoreChart',e)}
+}
+
+/* ---- PDF Modal ---- */
+function openPdfModal(){
+  try{
+    var con=$('#pdfSlots');con.innerHTML='';
+    PDF_SLOTS.forEach(function(sl){
+      var uSrc=S.pdfGet(ST.year,sl.key);
+      var preset=PRESET[ST.year];
+      var preUrl=preset&&preset.pdfUrls&&preset.pdfUrls[sl.key];
+      var eff=uSrc||(preUrl?{type:'url',value:preUrl,preset:true}:null);
+      var sCls=!eff?'pss-empty':eff.type==='file'?'pss-file':'pss-url';
+      var sTxt=!eff?'NONE':eff.type==='file'?'📁 '+(eff.value||'LOCAL'):(eff.preset?'🔗 URL(DEFAULT)':'🔗 URL');
+      var slotEl=el('div',{class:'pdf-slot'},
+        el('div',{class:'pdf-slot-hd'},sl.icon+' '+sl.label,el('span',{class:'pdf-slot-status '+sCls},sTxt))
+      );
+      var urlInp=el('input',{type:'url',placeholder:'https://...',value:(uSrc&&uSrc.type==='url')?uSrc.value:(preUrl||'')});
+      urlInp.setAttribute('data-slot-url',sl.key);
+      slotEl.appendChild(urlInp);
+      var drop=el('label',{class:'file-drop'},'📤 PDFをドラッグ&ドロップ、またはクリック');
+      var fInp=el('input',{type:'file',accept:'application/pdf'});
+      fInp.setAttribute('data-slot-file',sl.key);
+      fInp.onchange=function(e){
+        var f=e.target.files[0];if(!f)return;
+        IDB.put(ST.year+'_'+sl.key,f).then(function(){
+          S.pdfSet(ST.year,sl.key,{type:'file',value:f.name});
+          toast('✓ '+sl.label+' にファイル保存しました','success');
+        }).catch(function(e){toast('ファイル保存エラー','error')});
+      };
+      drop.appendChild(fInp);
+      slotEl.appendChild(drop);
+      con.appendChild(slotEl);
+    });
+    $('#pdfModal').classList.add('show');
+  }catch(e){console.error('openPdfModal',e)}
+}
+function closePdfModal(){$('#pdfModal').classList.remove('show')}
+function savePdfSettings(){
+  try{
+    $$('input[data-slot-url]').forEach(function(inp){
+      var slot=inp.getAttribute('data-slot-url');var val=inp.value.trim();
+      var existing=S.pdfGet(ST.year,slot);
+      var preset=PRESET[ST.year];var preUrl=preset&&preset.pdfUrls&&preset.pdfUrls[slot];
+      if(existing&&existing.type==='file'&&!val)return;
+      if(val&&val!==preUrl)S.pdfSet(ST.year,slot,{type:'url',value:val});
+      else if(!val&&existing&&existing.type==='url')S.pdfDel(ST.year,slot);
+      else if(val===preUrl&&existing&&existing.type==='url')S.pdfDel(ST.year,slot);
+    });
+    closePdfModal();renderPdfTabs();
+    loadPdf(ST.pdfTab).catch(function(e){console.warn(e)});
+    toast('PDF設定を保存しました','success');
+  }catch(e){console.error('savePdfSettings',e);toast('保存エラー','error')}
+}
+
+/* ---- Settings Modal ---- */
+function openSettingsModal(){
+  try{
+    $('#gistPatInput').value=S.gistPat();
+    $('#gistIdInput').value=S.gistId();
+    var gs=$('#gistStatus');if(gs)gs.className='set-status';
+    var ds=$('#dataStatus');if(ds)ds.className='set-status';
+    updateAppInfo();
+    $('#settingsModal').classList.add('show');
+  }catch(e){console.warn('openSettingsModal',e)}
+}
+function closeSettingsModal(){$('#settingsModal').classList.remove('show')}
+function saveGistSettings(){
+  try{
+    var pat=$('#gistPatInput').value.trim();
+    var id=$('#gistIdInput').value.trim();
+    S.gistPat(pat);S.gistId(id);
+    setGistStatus('💾 保存しました'+(pat?'':' (PATなし)'),pat?'ok':'info');
+    setSyncDot(pat?'ok':'');
+  }catch(e){console.warn('saveGistSettings',e)}
+}
+function updateAppInfo(){
+  try{
+    var h=S.hist();var qs=S.qstat();
+    var totalQ=0;Object.keys(qs).forEach(function(y){Object.keys(qs[y]).forEach(function(){totalQ++})});
+    var html='Version: KAN MASTER v12<br>'+
+      'History: '+h.length+'件<br>'+
+      'Question Stats: '+totalQ+'問<br>'+
+      'Gist ID: '+(S.gistId()||'未設定')+'<br>'+
+      'Last Sync: '+(S.gistLastSync()||'未同期');
+    $('#appInfoArea').innerHTML=html;
+  }catch(e){}
+}
+
+/* ---- Gist Sync ---- */
+var GIST_FILE='kan_master_data.json';
+var GIST_API='https://api.github.com/gists';
+function setSyncDot(state){var d=$('#syncDot');if(d)d.className='sync-dot'+(state?' '+state:'')}
+function setGistStatus(msg,type){var e=$('#gistStatus');if(!e)return;e.textContent=msg;e.className='set-status'+(type?' '+type:'')}
+function setDataStatus(msg,type){var e=$('#dataStatus');if(!e)return;e.textContent=msg;e.className='set-status'+(type?' '+type:'')}
+
+async function syncToGist(silent){
+  try{
+    silent=silent||false;
+    var pat=S.gistPat();var id=S.gistId();
+    if(!pat){if(!silent)setGistStatus('⚠ PAT が設定されていません','err');return}
+    setSyncDot('spin');
+    var payload={hist:S.hist(),qstat:S.qstat(),version:2,updatedAt:new Date().toISOString()};
+    var body={files:{}};body.files[GIST_FILE]={content:JSON.stringify(payload,null,2)};
+    var res,gistId=id;
+    if(gistId){
+      res=await fetch(GIST_API+'/'+gistId,{method:'PATCH',headers:{Authorization:'token '+pat,'Accept':'application/vnd.github.v3+json'},body:JSON.stringify(body)});
+    }else{
+      res=await fetch(GIST_API,{method:'POST',headers:{Authorization:'token '+pat,'Accept':'application/vnd.github.v3+json'},body:JSON.stringify(Object.assign({public:false,description:'KAN MASTER data'},body))});
+    }
+    if(!res.ok){var j=await res.json().catch(function(){return{}});var msg=j.message||res.status;setSyncDot('err');if(!silent)setGistStatus('❌ エラー: '+msg,'err');else toast('Gist同期エラー: '+msg,'error');return}
+    var j2=await res.json();gistId=j2.id;S.gistId(gistId);
+    var inp=$('#gistIdInput');if(inp)inp.value=gistId;
+    var ts=new Date().toLocaleTimeString('ja-JP');
+    S.gistLastSync(new Date().toISOString());
+    setSyncDot('ok');
+    if(!silent)setGistStatus('✅ 同期完了 '+ts+' (ID: '+gistId+')','ok');
+    else toast('☁ Gist同期完了','success');
+  }catch(e){
+    setSyncDot('err');
+    if(!silent)setGistStatus('❌ ネットワークエラー: '+e.message,'err');
+    else toast('Gist同期失敗','error');
+  }
+}
+async function syncFromGist(){
+  try{
+    var pat=S.gistPat();var id=S.gistId();
+    if(!pat){setGistStatus('⚠ PAT が設定されていません','err');return}
+    if(!id){setGistStatus('⚠ Gist ID が設定されていません','err');return}
+    setSyncDot('spin');
+    var res=await fetch(GIST_API+'/'+id,{headers:{Authorization:'token '+pat,'Accept':'application/vnd.github.v3+json'}});
+    if(!res.ok){var j=await res.json().catch(function(){return{}});setSyncDot('err');setGistStatus('❌ '+(j.message||res.status),'err');return}
+    var data=await res.json();
+    var file=data.files&&data.files[GIST_FILE];
+    if(!file){setSyncDot('err');setGistStatus('❌ ファイルが見つかりません','err');return}
+    var payload=JSON.parse(file.content);
+    if(payload.hist)S.histSet(payload.hist);
+    if(payload.qstat)S.qstatSet(payload.qstat);
+    S.gistLastSync(new Date().toISOString());
+    setSyncDot('ok');
+    setGistStatus('✅ 読込完了 ('+(payload.hist?payload.hist.length:0)+'件復元)','ok');
+    renderHome();renderHistList();drawScoreChart();
+    toast('Gistから復元しました','success');
+  }catch(e){
+    setSyncDot('err');
+    setGistStatus('❌ ネットワークエラー: '+e.message,'err');
+  }
+}
+function openGist(){
+  var id=S.gistId();
+  if(!id){setGistStatus('⚠ Gist IDを設定してください','err');return}
+  window.open('https://gist.github.com/'+id,'_blank');
+}
+
+/* ---- Export/Import ---- */
+function exportDataJSON(){
+  try{
+    var d={hist:S.hist(),qstat:S.qstat(),exportedAt:new Date().toISOString(),version:2};
+    var blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='kan_master_backup_'+new Date().toISOString().slice(0,10)+'.json';
+    a.click();
+    setTimeout(function(){URL.revokeObjectURL(a.href)},5000);
+    toast('エクスポートしました','success');
+  }catch(e){console.error('exportDataJSON',e);toast('エクスポートエラー','error')}
+}
+function importDataJSON(event){
+  try{
+    var f=event.target.files[0];if(!f)return;
+    var reader=new FileReader();
+    reader.onload=function(e){
+      try{
+        var d=JSON.parse(e.target.result);
+        if(d.hist)S.histSet(d.hist);
+        if(d.qstat)S.qstatSet(d.qstat);
+        renderHome();renderHistList();drawScoreChart();
+        toast('インポートしました ('+d.hist.length+'件)','success');
+      }catch(err){toast('JSONパースエラー','error')}
+    };
+    reader.readAsText(f);
+  }catch(e){console.error('importDataJSON',e)}
+}
+
+/* ---- Analytics ---- */
+var _analyticsFilter='all';
+var _adviceYearIdx=0;
+function setAnalyticsFilter(f){_analyticsFilter=f;renderAnalyticsTrend()}
+function showYearFilterMenu(){
+  var btn=prompt('年度を選択 (R7/R6/R5/R4/R3 または all)',_analyticsFilter);
+  if(btn!==null){_analyticsFilter=btn;renderAnalyticsTrend()}
+}
+function getAnalyticsHist(){
+  var all=S.hist().filter(function(e){return e.score!=null});
+  if(_analyticsFilter==='all')return all;
+  return all.filter(function(e){return e.year===_analyticsFilter});
+}
+function renderAnalytics(){
+  try{renderAnalyticsTrend();renderYearCompare();renderCategoryAdvice();drawCategoryChart();renderAHistList()}catch(e){console.warn('renderAnalytics',e)}
+}
+function renderAnalyticsTrend(){
+  try{
+    drawTrendChart();drawAppliedChart();
+  }catch(e){console.warn('renderAnalyticsTrend',e)}
+}
+function drawTrendChart(){
+  try{
+    var canvas=$('#aChartTrend');if(!canvas)return;
+    var data=getAnalyticsHist().slice(-30);
+    _drawLineChart(canvas,data,'score',60);
+  }catch(e){console.warn('drawTrendChart',e)}
+}
+function drawAppliedChart(){
+  try{
+    var canvas=$('#aChartApplied');if(!canvas)return;
+    var data=getAnalyticsHist().filter(function(e){return e.appliedTotal&&e.appliedTotal>0}).slice(-30)
+      .map(function(e){return{score:Math.round(e.appliedCorrect/e.appliedTotal*100),ts:e.ts,year:e.year}});
+    _drawLineChart(canvas,data,'score',50);
+  }catch(e){console.warn('drawAppliedChart',e)}
+}
+function _drawLineChart(canvas,data,valueKey,threshold){
+  try{
+    var ctx=canvas.getContext('2d');
+    var dpr=window.devicePixelRatio||1;
+    var cssW=canvas.clientWidth||600;var cssH=canvas.clientHeight||200;
+    canvas.width=cssW*dpr;canvas.height=cssH*dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,cssW,cssH);
+    var cs=getComputedStyle(document.documentElement);
+    var cBorder=cs.getPropertyValue('--border').trim()||'rgba(0,245,255,.2)';
+    var cCyan=cs.getPropertyValue('--neon-cyan').trim()||'#00f5ff';
+    var cGreen=cs.getPropertyValue('--neon-green').trim()||'#39ff88';
+    var cRed=cs.getPropertyValue('--neon-red').trim()||'#ff4d6d';
+    var cText=cs.getPropertyValue('--text-sub').trim()||'#8b95c9';
+    var pad={top:20,right:12,bottom:24,left:32};
+    var w=cssW-pad.left-pad.right;var h=cssH-pad.top-pad.bottom;
+    ctx.font='10px monospace';
+    [0,25,50,75,100].forEach(function(v){
+      var y=pad.top+h*(1-v/100);
+      ctx.beginPath();ctx.moveTo(pad.left,y);ctx.lineTo(pad.left+w,y);
+      ctx.strokeStyle=v===threshold?cGreen:cBorder;ctx.lineWidth=v===threshold?1.5:0.5;ctx.stroke();
+      ctx.fillStyle=cText;ctx.fillText(v+'',2,y+3);
+    });
+    if(!data.length){ctx.fillStyle=cText;ctx.textAlign='center';ctx.fillText('データがありません',cssW/2,cssH/2);ctx.textAlign='left';return}
+    if(data.length===1){
+      var x0=pad.left+w/2;var y0=pad.top+h*(1-data[0][valueKey]/100);
+      ctx.beginPath();ctx.arc(x0,y0,4,0,Math.PI*2);ctx.fillStyle=cCyan;ctx.fill();
+      ctx.fillStyle=cText;ctx.textAlign='center';ctx.fillText(data[0][valueKey]+'点',x0,y0-8);ctx.textAlign='left';return;
+    }
+    ctx.beginPath();
+    data.forEach(function(e,i){
+      var x=pad.left+w*(i/(data.length-1));
+      var y=pad.top+h*(1-e[valueKey]/100);
+      if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+    });
+    ctx.strokeStyle=cCyan;ctx.lineWidth=2;ctx.stroke();
+    data.forEach(function(e,i){
+      var x=pad.left+w*(i/(data.length-1));
+      var y=pad.top+h*(1-e[valueKey]/100);
+      ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);
+      ctx.fillStyle=e[valueKey]>=threshold?cGreen:cRed;ctx.fill();
+    });
+  }catch(e){console.warn('_drawLineChart',e)}
+}
+function renderYearCompare(){
+  try{
+    var grid=$('#yearCompareGrid');if(!grid)return;grid.innerHTML='';
+    var table=$('#yearStatTable');if(!table)return;table.innerHTML='';
+    var all=S.hist();
+    var tHtml='<table class="hist-table"><thead><tr><th>YEAR</th><th>回数</th><th>BEST</th><th>AVG</th><th>PASS</th></tr></thead><tbody>';
+    YEARS.forEach(function(y){
+      var yh=all.filter(function(e){return e.year===y.id&&e.score!=null});
+      var best=yh.length?Math.max.apply(null,yh.map(function(e){return e.score})):null;
+      var avg=yh.length?Math.round(yh.reduce(function(s,e){return s+e.score},0)/yh.length):null;
+      var pass=yh.filter(function(e){return e.passed}).length;
+      var passRate=yh.length?Math.round(pass/yh.length*100):0;
+      grid.appendChild(el('div',{class:'year-compare-card'},
+        el('div',{class:'yc-name'},y.name),
+        el('div',{class:'yc-best'+(best&&best>=60?'':' fail')},best!=null?best+'点':'—'),
+        el('div',{class:'yc-info'},yh.length+'回 · AVG '+avg+' · PASS '+passRate+'%')
+      ));
+      tHtml+='<tr><td>'+y.name+'</td><td>'+yh.length+'</td><td>'+(best!=null?best:'—')+'</td><td>'+(avg!=null?avg:'—')+'</td><td>'+pass+'/'+yh.length+'</td></tr>';
+    });
+    tHtml+='</tbody></table>';
+    table.innerHTML=tHtml;
+  }catch(e){console.warn('renderYearCompare',e)}
+}
+function getCatStats(){
+  var all=S.qstat();var result=[];
+  ['mondaiA','mondaiB'].forEach(function(pk){
+    Q_CAT[pk].forEach(function(cat){
+      var total=0,correct=0;
+      YEARS.forEach(function(y){
+        var bucket=all[y.id]||{};
+        for(var q=cat.from;q<=cat.to;q++){
+          var k=pk+'_'+q;var s=bucket[k];
+          if(s&&s.attempts>0){total+=s.attempts;correct+=s.correct}
+        }
+      });
+      result.push({pk:pk,cat:cat,total:total,correct:correct,rate:total>0?correct/total:null});
+    });
+  });
+  return result;
+}
+function getCatStatsFiltered(){
+  var all=S.qstat();
+  var yearFilter=_adviceYearIdx===0?null:YEARS[_adviceYearIdx-1].id;
+  var result=[];
+  ['mondaiA','mondaiB'].forEach(function(pk){
+    Q_CAT[pk].forEach(function(cat){
+      var total=0,correct=0;
+      var years=yearFilter?[yearFilter]:YEARS.map(function(y){return y.id});
+      years.forEach(function(yid){
+        var bucket=all[yid]||{};
+        for(var q=cat.from;q<=cat.to;q++){
+          var k=pk+'_'+q;var s=bucket[k];
+          if(s&&s.attempts>0){total+=s.attempts;correct+=s.correct}
+        }
+      });
+      result.push({pk:pk,cat:cat,total:total,correct:correct,rate:total>0?correct/total:null});
+    });
+  });
+  return result;
+}
+function drawCategoryChart(){
+  try{
+    var canvas=$('#aChartCategory');if(!canvas)return;
+    var stats=getCatStats();
+    var ctx=canvas.getContext('2d');
+    var dpr=window.devicePixelRatio||1;
+    var cssW=canvas.clientWidth||600;var cssH=280;
+    canvas.width=cssW*dpr;canvas.height=cssH*dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,cssW,cssH);
+    var cs=getComputedStyle(document.documentElement);
+    var cCyan=cs.getPropertyValue('--neon-cyan').trim()||'#00f5ff';
+    var cGreen=cs.getPropertyValue('--neon-green').trim()||'#39ff88';
+    var cRed=cs.getPropertyValue('--neon-red').trim()||'#ff4d6d';
+    var cText=cs.getPropertyValue('--text-sub').trim()||'#8b95c9';
+    var valid=stats.filter(function(s){return s.rate!=null});
+    if(!valid.length){ctx.fillStyle=cText;ctx.textAlign='center';ctx.fillText('データがありません',cssW/2,cssH/2);return}
+    var barH=Math.max(16,(cssH-20)/valid.length-4);
+    var padL=140;
+    valid.forEach(function(s,i){
+      var y=i*(barH+4)+10;
+      var pct=Math.round(s.rate*100);
+      var barW=(cssW-padL-40)*s.rate;
+      // Label
+      ctx.fillStyle=cText;ctx.font='10px sans-serif';ctx.textAlign='right';
+      ctx.fillText(s.cat.icon+' '+s.cat.name,padL-8,y+barH/2+3);
+      // Bar
+      ctx.fillStyle=pct>=70?cGreen:pct<40?cRed:cCyan;
+      ctx.fillRect(padL,y,barW,barH);
+      // Percentage
+      ctx.fillStyle='#fff';ctx.textAlign='left';ctx.font='10px monospace';
+      ctx.fillText(pct+'%',padL+barW+4,y+barH/2+3);
+    });
+    ctx.textAlign='left';
+  }catch(e){console.warn('drawCategoryChart',e)}
+}
+function renderCategoryAdvice(){
+  try{
+    var wrap=$('#catAdviceList');if(!wrap)return;wrap.innerHTML='';
+    var stats=getCatStatsFiltered();
+    var valid=stats.filter(function(s){return s.rate!=null}).sort(function(a,b){return a.rate-b.rate});
+    if(!valid.length){wrap.innerHTML='<div style="color:var(--text-sub);font-size:12px;padding:10px">データがありません</div>';return}
+    valid.forEach(function(s){
+      var pct=Math.round(s.rate*100);
+      wrap.appendChild(el('div',{class:'cat-advice-item'},
+        el('div',{class:'cat-advice-icon'},s.cat.icon),
+        el('div',{class:'cat-advice-info'},
+          el('div',{class:'cat-advice-name'},s.cat.name),
+          el('div',{class:'cat-advice-rate'},'正答率: <span class="'+(pct>=70?'ok':'ng')+'">'+pct+'% ('+s.correct+'/'+s.total+')</span>'),
+          el('div',{class:'cat-advice-text'},s.cat.advice)
+        )
+      ));
+    });
+  }catch(e){console.warn('renderCategoryAdvice',e)}
+}
+function cycleAdviceYear(){
+  _adviceYearIdx=(_adviceYearIdx+1)%(YEARS.length+1);
+  var btn=$('#adviceYearBtn');
+  if(btn)btn.textContent=_adviceYearIdx===0?'全年度':YEARS[_adviceYearIdx-1].name;
+  renderCategoryAdvice();drawCategoryChart();
+}
+function renderAHistList(){
+  try{
+    var wrap=$('#aHistList');if(!wrap)return;
+    var all=S.hist().slice().reverse();
+    if(!all.length){wrap.innerHTML='<div style="color:var(--text-sub);font-size:12px;padding:10px">履歴がありません</div>';return}
+    var tw=el('div',{class:'hist-wrap'});
+    var tb=el('table',{class:'hist-table'});
+    tb.appendChild(el('thead',{},el('tr',{},
+      el('th',{},'DATE'),el('th',{},'YEAR'),el('th',{},'MODE'),el('th',{},'SCORE'),el('th',{},'結果')
+    )));
+    var tbody=el('tbody',{});
+    all.forEach(function(e){
+      var d=new Date(e.ts);
+      var ds=d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate();
+      var y=getYear(e.year);
+      var ml=e.mode==='practice'?'練習':e.mode==='exam'?'模試':'復習';
+      tbody.appendChild(el('tr',{},
+        el('td',{},ds),
+        el('td',{},y?y.name:e.year),
+        el('td',{},ml),
+        el('td',{class:'sc '+(e.score>=60?'pass':'fail')},e.score!=null?e.score+'点':'—'),
+        el('td',{},e.passed?'PASS':e.score!=null?'FAIL':'—')
+      ));
+    });
+    tb.appendChild(tbody);tw.appendChild(tb);wrap.innerHTML='';wrap.appendChild(tw);
+  }catch(e){console.warn('renderAHistList',e)}
+}
+
+/* ============================================================
+   EVENT LISTENERS
+   ============================================================ */
+document.addEventListener('DOMContentLoaded',function(){
+  // Theme
+  var theme=S.theme();
+  document.documentElement.setAttribute('data-theme',theme);
+  // Header buttons
+  $('#homeBtn').onclick=goHome;
+  $('#themeBtn').onclick=function(){
+    var cur=S.theme();
+    var next=cur==='dark'?'light':'dark';
+    S.theme(next);
+    document.documentElement.setAttribute('data-theme',next);
+  };
+  $('#analyticsBtn').onclick=function(){goScreen('analytics');renderAnalytics()};
+  $('#settingsBtn').onclick=openSettingsModal;
+  // Mode tabs
+  $$('.mode-tab').forEach(function(tab){
+    tab.onclick=function(){
+      $$('.mode-tab').forEach(function(t){t.classList.remove('active')});
+      tab.classList.add('active');
+      ST.mode=tab.getAttribute('data-mode');
+      stopTimer();
+      if(ST.mode==='exam'){var r=getRules(ST.year);startTimer(r.timeLimit);toast('模試モード開始 (制限'+r.timeLimit+'分)')}
+      else if(ST.mode==='review'){
+        var tm=$('#timer');if(tm)tm.style.display='none';
+        if(ST.grading){restoreSel();applyGrading(ST.grading)}else toast('採点後に復習表示が利用できます');
+      }else{var tm2=$('#timer');if(tm2)tm2.style.display='none';if(ST.grading)clearGrading()}
+    };
+  });
+  // Paper tabs (mobile)
+  $$('.paper-tab-mob').forEach(function(t){
+    t.onclick=function(){
+      var p=t.getAttribute('data-paper');ST.mobilePaper=p;
+      $$('.paper-tab-mob').forEach(function(x){x.classList.toggle('active',x===t)});
+      updateMobilePaperVis();
+    };
+  });
+  // Detail tabs
+  $$('.detail-tab').forEach(function(t){
+    t.onclick=function(){
+      $$('.detail-tab').forEach(function(x){x.classList.remove('active')});
+      t.classList.add('active');
+      ST.detailTab=t.getAttribute('data-dtab');
+      renderDetailContent();
+    };
+  });
+  // Analytics tabs
+  $$('.analytics-tab').forEach(function(t){
+    t.onclick=function(){
+      $$('.analytics-tab').forEach(function(x){x.classList.remove('active')});
+      $$('.analytics-pane').forEach(function(x){x.classList.remove('active')});
+      t.classList.add('active');
+      var pane=$('#apane-'+t.getAttribute('data-atab'));
+      if(pane)pane.classList.add('active');
+      var tab=t.getAttribute('data-atab');
+      if(tab==='trend')renderAnalyticsTrend();
+      else if(tab==='compare')renderYearCompare();
+      else if(tab==='category'){renderCategoryAdvice();drawCategoryChart()}
+      else if(tab==='history')renderAHistList();
+    };
+  });
+  // Modal close on background click
+  $('#pdfModal').onclick=function(e){if(e.target===this)closePdfModal()};
+  $('#settingsModal').onclick=function(e){if(e.target===this)closeSettingsModal()};
+  // Window resize → redraw charts
+  var resizeTimer=null;
+  window.addEventListener('resize',function(){
+    clearTimeout(resizeTimer);
+    resizeTimer=setTimeout(function(){
+      drawScoreChart();
+      var at=$('.analytics-tab.active');
+      if(at){
+        var tab=at.getAttribute('data-atab');
+        if(tab==='trend')renderAnalyticsTrend();
+        else if(tab==='category')drawCategoryChart();
+      }
+    },200);
+  });
+  // Init
+  renderHome();
+  // Auto sync if PAT set
+  if(S.gistPat())setSyncDot('ok');
+});
+
+/* Service Worker: removed (blob: URL not supported) */
+
+</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
